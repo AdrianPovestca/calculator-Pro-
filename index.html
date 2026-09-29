@@ -1,0 +1,1899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Calculator Pro+</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    :root {
+        --bg: #08090b;
+        --panel: #0f1115;
+        --panel-2: #14171c;
+        --panel-3: #191c22;
+        --border: #252a32;
+        --border-light: #303640;
+
+        --text: #f5f7fa;
+        --muted: #8c949f;
+        --muted-2: #606873;
+
+        --accent: #ffffff;
+        --green: #72d69a;
+        --red: #ff6f6f;
+        --blue: #78a8ff;
+
+        --shadow: 0 30px 80px rgba(0,0,0,.45);
+    }
+
+    body {
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+
+        background:
+            radial-gradient(
+                circle at 50% 10%,
+                rgba(255,255,255,.045),
+                transparent 35%
+            ),
+            var(--bg);
+
+        color: var(--text);
+        font-family:
+            Inter,
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            sans-serif;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* =========================
+       APP WINDOW
+    ========================= */
+
+    .app-window {
+        width: min(1180px, 94vw);
+        height: min(760px, 90vh);
+
+        background: var(--panel);
+
+        border: 1px solid var(--border-light);
+        border-radius: 18px;
+
+        box-shadow: var(--shadow);
+
+        display: flex;
+        overflow: hidden;
+
+        position: relative;
+    }
+
+    /* =========================
+       SIDEBAR
+    ========================= */
+
+    .sidebar {
+        width: 220px;
+        flex-shrink: 0;
+
+        background: #0c0e11;
+
+        border-right: 1px solid var(--border);
+
+        display: flex;
+        flex-direction: column;
+
+        padding: 22px 14px;
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+
+        padding: 4px 10px 26px;
+    }
+
+    .brand-icon {
+        width: 32px;
+        height: 32px;
+
+        border-radius: 9px;
+
+        background: #f5f5f5;
+        color: #090a0c;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 16px;
+        font-weight: 800;
+    }
+
+    .brand-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .brand-name {
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: -.2px;
+    }
+
+    .brand-version {
+        font-size: 10px;
+        color: var(--muted-2);
+        letter-spacing: .5px;
+    }
+
+    .nav {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .nav-label {
+        color: #4f5660;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 1.4px;
+
+        padding: 0 11px;
+        margin: 4px 0 7px;
+    }
+
+    .nav-item {
+        height: 40px;
+
+        border-radius: 9px;
+
+        display: flex;
+        align-items: center;
+        gap: 11px;
+
+        padding: 0 11px;
+
+        color: #858d98;
+
+        font-size: 12px;
+        font-weight: 500;
+
+        transition: .2s ease;
+    }
+
+    .nav-item:hover {
+        background: rgba(255,255,255,.035);
+        color: #dce0e5;
+    }
+
+    .nav-item.active {
+        background: #191c21;
+        color: #ffffff;
+    }
+
+    .nav-icon {
+        width: 18px;
+        text-align: center;
+        font-size: 14px;
+        opacity: .85;
+    }
+
+    .sidebar-bottom {
+        margin-top: auto;
+
+        border-top: 1px solid var(--border);
+
+        padding: 18px 10px 3px;
+    }
+
+    .local-status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        font-size: 10px;
+        color: #626a75;
+    }
+
+    .status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 10px rgba(114,214,154,.4);
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    .main {
+        flex: 1;
+        min-width: 0;
+
+        display: flex;
+        flex-direction: column;
+    }
+
+    .topbar {
+        height: 68px;
+        flex-shrink: 0;
+
+        border-bottom: 1px solid var(--border);
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 0 24px;
+    }
+
+    .page-title {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .page-title h1 {
+        font-size: 14px;
+        font-weight: 650;
+        letter-spacing: -.2px;
+    }
+
+    .page-title span {
+        font-size: 10px;
+        color: var(--muted-2);
+    }
+
+    .top-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .save-status {
+        font-size: 10px;
+        color: #59616c;
+        margin-right: 8px;
+    }
+
+    .exit-btn {
+        height: 34px;
+        padding: 0 14px;
+
+        background: transparent;
+
+        border: 1px solid #30353d;
+        border-radius: 8px;
+
+        color: #9ca3ad;
+
+        font-size: 11px;
+        font-weight: 600;
+
+        cursor: pointer;
+
+        transition: .2s ease;
+    }
+
+    .exit-btn:hover {
+        border-color: #666d78;
+        color: #fff;
+        background: rgba(255,255,255,.035);
+    }
+
+    /* =========================
+       CONTENT
+    ========================= */
+
+    .content {
+        flex: 1;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 35px;
+    }
+
+    .calculator-area {
+        width: min(540px, 100%);
+    }
+
+    .calculator-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        margin-bottom: 13px;
+    }
+
+    .calculator-heading {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .calculator-heading h2 {
+        font-size: 12px;
+        font-weight: 650;
+    }
+
+    .calculator-heading span {
+        color: #5f6670;
+        font-size: 10px;
+    }
+
+    .pro-badge {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: .8px;
+
+        color: #0a0b0d;
+        background: #f1f3f5;
+
+        border-radius: 5px;
+
+        padding: 5px 7px;
+    }
+
+    /* =========================
+       DISPLAY
+    ========================= */
+
+    .display {
+        height: 150px;
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(255,255,255,.025),
+                rgba(255,255,255,.005)
+            ),
+            #0a0c0f;
+
+        border: 1px solid var(--border-light);
+        border-radius: 13px;
+
+        padding: 20px 22px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+
+        margin-bottom: 12px;
+
+        overflow: hidden;
+    }
+
+    .expression {
+        height: 22px;
+
+        text-align: right;
+
+        color: #606874;
+
+        font-family:
+            "SFMono-Regular",
+            Consolas,
+            monospace;
+
+        font-size: 13px;
+
+        margin-bottom: 5px;
+    }
+
+    .result {
+        text-align: right;
+
+        font-size: 42px;
+        line-height: 1;
+
+        font-weight: 400;
+        letter-spacing: -2px;
+
+        color: #f8fafc;
+
+        transition: .15s ease;
+    }
+
+    .result.flash {
+        transform: scale(1.025);
+        color: #ffffff;
+    }
+
+    /* =========================
+       KEYPAD
+    ========================= */
+
+    .keypad {
+        display: grid;
+
+        grid-template-columns: repeat(4, 1fr);
+
+        gap: 8px;
+    }
+
+    .key {
+        height: 62px;
+
+        border-radius: 9px;
+
+        border: 1px solid var(--border);
+
+        background: #12151a;
+
+        color: #dce0e5;
+
+        font-family:
+            "SFMono-Regular",
+            Consolas,
+            monospace;
+
+        font-size: 15px;
+
+        cursor: pointer;
+
+        transition:
+            background .12s ease,
+            border-color .12s ease,
+            transform .08s ease;
+    }
+
+    .key:hover {
+        background: #191d23;
+        border-color: #343a43;
+    }
+
+    .key:active {
+        transform: scale(.97);
+        background: #20242b;
+    }
+
+    .key.operator {
+        background: #171a20;
+        color: #ffffff;
+    }
+
+    .key.equals {
+        background: #f2f4f6;
+        color: #08090b;
+        border-color: #f2f4f6;
+
+        font-weight: 700;
+    }
+
+    .key.equals:hover {
+        background: #ffffff;
+    }
+
+    .key.clear {
+        color: #ff8585;
+    }
+
+    .key.zero {
+        grid-column: span 2;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    .calculator-footer {
+        margin-top: 14px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        color: #4f5660;
+
+        font-size: 9px;
+    }
+
+    .shortcut {
+        font-family: monospace;
+    }
+
+    /* =========================
+       POV CAPTION
+    ========================= */
+
+    .pov-caption {
+        position: fixed;
+
+        top: 24px;
+        left: 50%;
+
+        transform: translateX(-50%);
+
+        padding: 9px 15px;
+
+        border: 1px solid rgba(255,255,255,.09);
+        border-radius: 8px;
+
+        background: rgba(9,10,12,.78);
+
+        backdrop-filter: blur(12px);
+
+        color: #e6e8eb;
+
+        font-size: 12px;
+        font-weight: 600;
+
+        letter-spacing: -.1px;
+
+        z-index: 20;
+
+        box-shadow: 0 10px 35px rgba(0,0,0,.3);
+    }
+
+    /* =========================
+       PAYWALL OVERLAY
+    ========================= */
+
+    .overlay {
+        position: fixed;
+        inset: 0;
+
+        background: rgba(0,0,0,.67);
+
+        backdrop-filter: blur(10px);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        opacity: 0;
+        pointer-events: none;
+
+        transition: opacity .25s ease;
+
+        z-index: 100;
+    }
+
+    .overlay.show {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .paywall {
+        width: min(420px, 90vw);
+
+        background:
+            linear-gradient(
+                145deg,
+                #171a1f,
+                #0f1115
+            );
+
+        border: 1px solid #343942;
+
+        border-radius: 18px;
+
+        box-shadow:
+            0 35px 100px rgba(0,0,0,.7),
+            0 0 0 1px rgba(255,255,255,.02);
+
+        padding: 30px;
+
+        transform: translateY(12px) scale(.98);
+
+        transition: .3s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .overlay.show .paywall {
+        transform: translateY(0) scale(1);
+    }
+
+    .paywall-icon {
+        width: 44px;
+        height: 44px;
+
+        border-radius: 12px;
+
+        background: #f2f4f6;
+        color: #0b0c0e;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 18px;
+        font-weight: 800;
+
+        margin-bottom: 20px;
+    }
+
+    .paywall-label {
+        color: #777f8a;
+
+        font-size: 9px;
+        font-weight: 700;
+
+        letter-spacing: 1.4px;
+
+        margin-bottom: 8px;
+    }
+
+    .paywall h3 {
+        font-size: 22px;
+        font-weight: 650;
+
+        letter-spacing: -.5px;
+
+        margin-bottom: 9px;
+    }
+
+    .paywall-description {
+        color: #858d97;
+
+        font-size: 12px;
+        line-height: 1.6;
+
+        margin-bottom: 24px;
+    }
+
+    .price-box {
+        border: 1px solid #2b3038;
+        background: #101216;
+
+        border-radius: 11px;
+
+        padding: 16px 17px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        margin-bottom: 12px;
+    }
+
+    .price-left {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .price-title {
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .price-subtitle {
+        font-size: 9px;
+        color: #606873;
+    }
+
+    .price {
+        font-size: 21px;
+        font-weight: 700;
+        letter-spacing: -.5px;
+    }
+
+    .unlock-btn {
+        width: 100%;
+        height: 46px;
+
+        border: 0;
+        border-radius: 9px;
+
+        background: #f2f4f6;
+        color: #08090b;
+
+        font-size: 11px;
+        font-weight: 750;
+        letter-spacing: .1px;
+
+        cursor: pointer;
+
+        transition: .15s ease;
+    }
+
+    .unlock-btn:hover {
+        background: white;
+        transform: translateY(-1px);
+    }
+
+    .later-btn {
+        width: 100%;
+        height: 42px;
+
+        margin-top: 8px;
+
+        border: 0;
+        background: transparent;
+
+        color: #626a75;
+
+        font-size: 10px;
+
+        cursor: pointer;
+    }
+
+    .later-btn:hover {
+        color: #a0a7b0;
+    }
+
+    /* =========================
+       EXIT PAYWALL
+    ========================= */
+
+    .exit-paywall {
+        width: min(420px, 90vw);
+
+        background: #101216;
+
+        border: 1px solid #363b44;
+
+        border-radius: 18px;
+
+        padding: 31px;
+
+        box-shadow: 0 35px 100px rgba(0,0,0,.75);
+
+        transform: translateY(12px) scale(.98);
+
+        transition: .3s ease;
+    }
+
+    .overlay.show .exit-paywall {
+        transform: translateY(0) scale(1);
+    }
+
+    .warning-icon {
+        width: 44px;
+        height: 44px;
+
+        border-radius: 12px;
+
+        background: rgba(255,111,111,.09);
+        border: 1px solid rgba(255,111,111,.18);
+
+        color: #ff7b7b;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 18px;
+
+        margin-bottom: 20px;
+    }
+
+    .exit-paywall h3 {
+        font-size: 22px;
+        font-weight: 650;
+
+        letter-spacing: -.5px;
+
+        margin-bottom: 9px;
+    }
+
+    .exit-description {
+        color: #858d97;
+
+        font-size: 12px;
+        line-height: 1.6;
+
+        margin-bottom: 22px;
+    }
+
+    .exit-price {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        background: #15181d;
+
+        border: 1px solid #292e36;
+
+        padding: 16px;
+
+        border-radius: 10px;
+
+        margin-bottom: 10px;
+    }
+
+    .exit-price span:first-child {
+        color: #777f89;
+        font-size: 10px;
+    }
+
+    .exit-price strong {
+        font-size: 21px;
+    }
+
+    .pay-exit {
+        width: 100%;
+        height: 46px;
+
+        border: 0;
+        border-radius: 9px;
+
+        background: #f2f4f6;
+        color: #090a0c;
+
+        font-size: 11px;
+        font-weight: 750;
+
+        cursor: pointer;
+    }
+
+    .fake-success {
+        display: none;
+        text-align: center;
+    }
+
+    .fake-success.show {
+        display: block;
+    }
+
+    .fake-success-icon {
+        width: 54px;
+        height: 54px;
+
+        margin: 0 auto 18px;
+
+        border-radius: 50%;
+
+        background: rgba(114,214,154,.1);
+        border: 1px solid rgba(114,214,154,.25);
+
+        color: var(--green);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 22px;
+    }
+
+    .fake-success h3 {
+        margin-bottom: 8px;
+    }
+
+    .fake-success p {
+        color: #777f89;
+        font-size: 11px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    .success-close {
+        width: 100%;
+        height: 44px;
+
+        border: 1px solid #30353d;
+        border-radius: 9px;
+
+        background: transparent;
+        color: #dce0e5;
+
+        cursor: pointer;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 750px) {
+        .sidebar {
+            display: none;
+        }
+
+        .app-window {
+            width: 95vw;
+            height: 88vh;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .save-status {
+            display: none;
+        }
+
+        .result {
+            font-size: 34px;
+        }
+
+        .key {
+            height: 55px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<!--
+    OPTIONAL VIDEO CAPTION
+    Remove this div if you want to add
+    "POV: what do you think about this app?"
+    directly in CapCut.
+-->
+<div class="pov-caption">
+    POV: what do you think about this app?
+</div>
+
+
+<div class="app-window">
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                +
+            </div>
+
+            <div class="brand-text">
+                <div class="brand-name">
+                    Calculator Pro+
+                </div>
+
+                <div class="brand-version">
+                    v4.8.2
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="nav">
+
+            <div class="nav-label">
+                WORKSPACE
+            </div>
+
+            <div class="nav-item active">
+                <span class="nav-icon">⌘</span>
+                Calculator
+            </div>
+
+            <div class="nav-item">
+                <span class="nav-icon">◷</span>
+                History
+            </div>
+
+            <div class="nav-item">
+                <span class="nav-icon">⌁</span>
+                Keyboard
+            </div>
+
+
+            <div class="nav-label" style="margin-top:22px;">
+                SYSTEM
+            </div>
+
+            <div class="nav-item">
+                <span class="nav-icon">⚙</span>
+                Settings
+            </div>
+
+            <div class="nav-item">
+                <span class="nav-icon">?</span>
+                About
+            </div>
+
+        </div>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="local-status">
+                <span class="status-dot"></span>
+                Local calculations
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div class="page-title">
+
+                <h1>
+                    Calculator
+                </h1>
+
+                <span>
+                    Precision workspace
+                </span>
+
+            </div>
+
+
+            <div class="top-actions">
+
+                <span class="save-status">
+                    All changes saved
+                </span>
+
+                <button
+                    class="exit-btn"
+                    id="exitButton"
+                >
+                    EXIT
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <section class="content">
+
+            <div class="calculator-area">
+
+                <div class="calculator-header">
+
+                    <div class="calculator-heading">
+
+                        <h2>
+                            Quick calculation
+                        </h2>
+
+                        <span>
+                            Professional arithmetic engine
+                        </span>
+
+                    </div>
+
+                    <div class="pro-badge">
+                        PRO+
+                    </div>
+
+                </div>
+
+
+                <!-- DISPLAY -->
+
+                <div class="display">
+
+                    <div
+                        class="expression"
+                        id="expression"
+                    >
+                        Ready
+                    </div>
+
+                    <div
+                        class="result"
+                        id="result"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <!-- KEYPAD -->
+
+                <div class="keypad">
+
+                    <button class="key clear" data-action="clear">
+                        AC
+                    </button>
+
+                    <button class="key" data-action="backspace">
+                        ⌫
+                    </button>
+
+                    <button class="key" data-value="%">
+                        %
+                    </button>
+
+                    <button class="key operator" data-value="/">
+                        ÷
+                    </button>
+
+
+                    <button class="key" data-value="7">
+                        7
+                    </button>
+
+                    <button class="key" data-value="8">
+                        8
+                    </button>
+
+                    <button class="key" data-value="9">
+                        9
+                    </button>
+
+                    <button class="key operator" data-value="*">
+                        ×
+                    </button>
+
+
+                    <button class="key" data-value="4">
+                        4
+                    </button>
+
+                    <button class="key" data-value="5">
+                        5
+                    </button>
+
+                    <button class="key" data-value="6">
+                        6
+                    </button>
+
+                    <button class="key operator" data-value="-">
+                        −
+                    </button>
+
+
+                    <button class="key" data-value="1">
+                        1
+                    </button>
+
+                    <button class="key" data-value="2">
+                        2
+                    </button>
+
+                    <button class="key" data-value="3">
+                        3
+                    </button>
+
+                    <button class="key operator" data-value="+">
+                        +
+                    </button>
+
+
+                    <button class="key zero" data-value="0">
+                        0
+                    </button>
+
+                    <button class="key" data-value=".">
+                        .
+                    </button>
+
+                    <button class="key equals" data-action="equals">
+                        =
+                    </button>
+
+                </div>
+
+
+                <div class="calculator-footer">
+
+                    <span>
+                        Calculator Pro+ Engine
+                    </span>
+
+                    <span class="shortcut">
+                        ENTER = calculate
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================
+     CALCULATOR PRO+ PAYWALL
+========================== -->
+
+<div
+    class="overlay"
+    id="proOverlay"
+>
+
+    <div class="paywall">
+
+        <div class="paywall-icon">
+            +
+        </div>
+
+        <div class="paywall-label">
+            CALCULATOR PRO+
+        </div>
+
+        <h3>
+            Calculation complete.
+        </h3>
+
+        <p class="paywall-description">
+            Your calculation has been processed successfully.
+            Continue using Calculator Pro+ to access unlimited
+            calculations and advanced workspace features.
+        </p>
+
+
+        <div class="price-box">
+
+            <div class="price-left">
+
+                <span class="price-title">
+                    Pro+ Lifetime Access
+                </span>
+
+                <span class="price-subtitle">
+                    One-time fictional unlock
+                </span>
+
+            </div>
+
+            <div class="price">
+                $24.99
+            </div>
+
+        </div>
+
+
+        <button class="unlock-btn" id="unlockButton">
+            UNLOCK PRO+ · $24.99
+        </button>
+
+        <button class="later-btn" id="laterButton">
+            Maybe later
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     EXIT PAYWALL
+========================== -->
+
+<div
+    class="overlay"
+    id="exitOverlay"
+>
+
+    <div class="exit-paywall" id="exitBox">
+
+        <div id="exitContent">
+
+            <div class="warning-icon">
+                !
+            </div>
+
+            <div class="paywall-label">
+                CALCULATOR PRO+
+            </div>
+
+            <h3>
+                Wait. You can't exit yet.
+            </h3>
+
+            <p class="exit-description">
+                Exiting Calculator Pro+ requires an Exit License.
+                This feature is available for a small one-time fee.
+            </p>
+
+
+            <div class="exit-price">
+
+                <span>
+                    Exit License
+                </span>
+
+                <strong>
+                    $5.99
+                </strong>
+
+            </div>
+
+
+            <button
+                class="pay-exit"
+                id="payExitButton"
+            >
+                PAY $5.99 TO EXIT
+            </button>
+
+
+            <button
+                class="later-btn"
+                id="stayButton"
+            >
+                Stay in Calculator Pro+
+            </button>
+
+        </div>
+
+
+        <!-- FAKE SUCCESS SCREEN -->
+
+        <div
+            class="fake-success"
+            id="successContent"
+        >
+
+            <div class="fake-success-icon">
+                ✓
+            </div>
+
+            <h3>
+                Exit unlocked.
+            </h3>
+
+            <p>
+                Your fictional Exit License has been activated.
+            </p>
+
+            <button
+                class="success-close"
+                id="successClose"
+            >
+                CLOSE
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /* =========================
+       CALCULATOR
+    ========================== */
+
+    const result = document.getElementById("result");
+    const expression = document.getElementById("expression");
+
+    let current = "";
+    let previous = "";
+    let operator = null;
+    let justCalculated = false;
+
+
+    function updateDisplay() {
+
+        if (current === "") {
+            result.textContent = "0";
+        } else {
+            result.textContent = current;
+        }
+
+    }
+
+
+    function inputNumber(number) {
+
+        if (justCalculated) {
+
+            current = "";
+            previous = "";
+            operator = null;
+
+            expression.textContent = "Ready";
+
+            justCalculated = false;
+        }
+
+
+        if (number === "." && current.includes(".")) {
+            return;
+        }
+
+
+        if (current === "0" && number !== ".") {
+            current = number;
+        } else {
+            current += number;
+        }
+
+
+        updateDisplay();
+    }
+
+
+    function chooseOperator(op) {
+
+        if (current === "") {
+            return;
+        }
+
+
+        if (previous !== "" && operator !== null) {
+
+            calculate(false);
+
+        }
+
+
+        previous = current;
+        current = "";
+
+        operator = op;
+
+        expression.textContent =
+            `${previous} ${displayOperator(op)}`;
+
+        justCalculated = false;
+    }
+
+
+    function displayOperator(op) {
+
+        if (op === "*") return "×";
+        if (op === "/") return "÷";
+        if (op === "-") return "−";
+
+        return op;
+    }
+
+
+    function calculate(showAnimation = true) {
+
+        if (
+            previous === "" ||
+            current === "" ||
+            operator === null
+        ) {
+            return;
+        }
+
+
+        const a = parseFloat(previous);
+        const b = parseFloat(current);
+
+        let answer;
+
+
+        switch (operator) {
+
+            case "+":
+                answer = a + b;
+                break;
+
+            case "-":
+                answer = a - b;
+                break;
+
+            case "*":
+                answer = a * b;
+                break;
+
+            case "/":
+                if (b === 0) {
+                    result.textContent = "Error";
+                    current = "";
+                    previous = "";
+                    operator = null;
+                    return;
+                }
+
+                answer = a / b;
+                break;
+        }
+
+
+        answer = Number(
+            answer.toFixed(8)
+        );
+
+
+        expression.textContent =
+            `${previous} ${displayOperator(operator)} ${current} =`;
+
+
+        current = String(answer);
+
+        previous = "";
+        operator = null;
+
+        justCalculated = true;
+
+
+        updateDisplay();
+
+
+        if (showAnimation) {
+
+            result.classList.add("flash");
+
+            setTimeout(() => {
+                result.classList.remove("flash");
+            }, 160);
+
+        }
+
+    }
+
+
+    function clearCalculator() {
+
+        current = "";
+        previous = "";
+        operator = null;
+        justCalculated = false;
+
+        expression.textContent = "Ready";
+
+        updateDisplay();
+    }
+
+
+    function backspace() {
+
+        if (justCalculated) {
+            clearCalculator();
+            return;
+        }
+
+        current = current.slice(0, -1);
+
+        updateDisplay();
+    }
+
+
+    /* =========================
+       BUTTONS
+    ========================== */
+
+    document.querySelectorAll(".key").forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            const value = button.dataset.value;
+            const action = button.dataset.action;
+
+
+            if (value !== undefined) {
+
+                if (
+                    value === "+" ||
+                    value === "-" ||
+                    value === "*" ||
+                    value === "/"
+                ) {
+
+                    chooseOperator(value);
+
+                } else if (value === "%") {
+
+                    if (current !== "") {
+
+                        current = String(
+                            parseFloat(current) / 100
+                        );
+
+                        updateDisplay();
+
+                    }
+
+                } else {
+
+                    inputNumber(value);
+
+                }
+
+            }
+
+
+            if (action === "equals") {
+                calculate();
+            }
+
+
+            if (action === "clear") {
+                clearCalculator();
+            }
+
+
+            if (action === "backspace") {
+                backspace();
+            }
+
+        });
+
+    });
+
+
+    /* =========================
+       KEYBOARD
+    ========================== */
+
+    document.addEventListener("keydown", event => {
+
+        const key = event.key;
+
+
+        if (
+            key >= "0" &&
+            key <= "9"
+        ) {
+
+            inputNumber(key);
+
+        }
+
+
+        if (key === ".") {
+            inputNumber(".");
+        }
+
+
+        if (
+            key === "+" ||
+            key === "-" ||
+            key === "*" ||
+            key === "/"
+        ) {
+
+            chooseOperator(key);
+
+        }
+
+
+        if (
+            key === "Enter" ||
+            key === "="
+        ) {
+
+            event.preventDefault();
+
+            calculate();
+
+        }
+
+
+        if (key === "Backspace") {
+            backspace();
+        }
+
+
+        if (key === "Escape") {
+
+            /*
+                IMPORTANT:
+                Escape also triggers the paywall.
+                This makes the gag work even if you
+                try to exit with the keyboard.
+            */
+
+            openExitPaywall();
+
+        }
+
+
+        if (key === "Delete") {
+            clearCalculator();
+        }
+
+    });
+
+
+    /* =========================
+       VIDEO DEMO SHORTCUT
+    ========================== */
+
+    /*
+        Press D to instantly load:
+
+        12 + 12.99 = 24.99
+
+        Useful when filming.
+    */
+
+    document.addEventListener("keydown", event => {
+
+        if (
+            event.key.toLowerCase() === "d" &&
+            !event.metaKey &&
+            !event.ctrlKey
+        ) {
+
+            current = "12.99";
+            previous = "12";
+            operator = "+";
+            justCalculated = false;
+
+            expression.textContent = "12 +";
+
+            updateDisplay();
+
+        }
+
+    });
+
+
+    /* =========================
+       PRO+ PAYWALL
+    ========================== */
+
+    const proOverlay =
+        document.getElementById("proOverlay");
+
+    const unlockButton =
+        document.getElementById("unlockButton");
+
+    const laterButton =
+        document.getElementById("laterButton");
+
+
+    function openProPaywall() {
+
+        proOverlay.classList.add("show");
+
+    }
+
+
+    function closeProPaywall() {
+
+        proOverlay.classList.remove("show");
+
+    }
+
+
+    unlockButton.addEventListener(
+        "click",
+        () => {
+
+            unlockButton.textContent =
+                "PRO+ UNLOCKED ✓";
+
+            setTimeout(() => {
+
+                unlockButton.textContent =
+                    "UNLOCK PRO+ · $24.99";
+
+                closeProPaywall();
+
+            }, 900);
+
+        }
+    );
+
+
+    laterButton.addEventListener(
+        "click",
+        closeProPaywall
+    );
+
+
+    /* =========================
+       IMPORTANT VIDEO FLOW
+    ========================== */
+
+    /*
+        When the user presses "="
+        and gets $24.99, we DON'T immediately
+        open the paywall.
+
+        This gives you a clean moment:
+
+            12 + 12.99 = 24.99
+
+        Then YOU press EXIT.
+
+        That's the punchline.
+    */
+
+
+    /* =========================
+       EXIT PAYWALL
+    ========================== */
+
+    const exitButton =
+        document.getElementById("exitButton");
+
+    const exitOverlay =
+        document.getElementById("exitOverlay");
+
+    const stayButton =
+        document.getElementById("stayButton");
+
+    const payExitButton =
+        document.getElementById("payExitButton");
+
+    const exitContent =
+        document.getElementById("exitContent");
+
+    const successContent =
+        document.getElementById("successContent");
+
+    const successClose =
+        document.getElementById("successClose");
+
+
+    function openExitPaywall() {
+
+        exitOverlay.classList.add("show");
+
+    }
+
+
+    function closeExitPaywall() {
+
+        exitOverlay.classList.remove("show");
+
+    }
+
+
+    exitButton.addEventListener(
+        "click",
+        openExitPaywall
+    );
+
+
+    stayButton.addEventListener(
+        "click",
+        closeExitPaywall
+    );
+
+
+    payExitButton.addEventListener(
+        "click",
+        () => {
+
+            /*
+                Fictional visual confirmation only.
+                No real payment is processed.
+            */
+
+            exitContent.style.display = "none";
+
+            successContent.classList.add("show");
+
+        }
+    );
+
+
+    successClose.addEventListener(
+        "click",
+        () => {
+
+            successContent.classList.remove("show");
+
+            exitContent.style.display = "block";
+
+            closeExitPaywall();
+
+        }
+    );
+
+
+    /* =========================
+       DEMO INITIALIZATION
+    ========================== */
+
+    updateDisplay();
+
+</script>
+
+</body>
+</html>
