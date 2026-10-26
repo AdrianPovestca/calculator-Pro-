@@ -4,778 +4,789 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#08090c">
 <title>Calculator Pro+ — Einstein Edition</title>
 
 <style>
 :root {
   color-scheme: dark;
-  --bg: #08090c;
-  --white: #f5f5f7;
-  --gold: #d8bd86;
-  --muted: #858b98;
+  --bg: #08090b;
+  --panel: #111318;
+  --line: #2b2e37;
+  --muted: #8c909d;
+  --gold: #e5c88e;
+  --white: #f6f6f8;
+  --green: #a4e7bd;
 }
 
-* {
-  box-sizing: border-box;
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #08090b;
+  color: var(--white);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
 
-html, body {
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: #08090c;
-  color: var(--white);
-}
-
-body {
-  min-height: 100vh;
-  min-height: 100dvh;
-  display: grid;
-  place-items: center;
-}
-
-button { font: inherit; cursor: pointer; }
-
 .phone {
   position: relative;
-  width: min(100%, 410px);
-  height: min(850px, 100dvh);
-  min-height: 0;
+  width: min(100%, 430px);
+  min-height: min(850px, calc(100dvh - 24px));
+  background: linear-gradient(160deg, #111318, #08090c 75%);
+  border: 1px solid #353842;
+  border-radius: 36px;
   overflow: hidden;
-  border: 1px solid #353943;
-  border-radius: 30px;
-  background: linear-gradient(160deg, #121419, #090a0e 70%);
-  box-shadow: 0 30px 100px #000a;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 30px 100px #0009;
 }
 
-.statusbar {
-  flex: 0 0 calc(30px + env(safe-area-inset-top, 0px));
+.status {
+  padding: 12px 25px 8px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: env(safe-area-inset-top, 0px) 24px 0;
-  color: #d8d9dd;
-  font-size: 11px;
+  color: #d7d8df;
+  font-size: 12px;
   font-weight: 700;
 }
 
-.status-right { display: flex; gap: 7px; align-items: center; }
-
-.battery {
-  width: 17px;
-  height: 9px;
-  border: 1px solid #b7bbc3;
-  border-radius: 3px;
-  position: relative;
-}
-
-.battery:before {
-  content: "";
-  position: absolute;
-  inset: 1px 3px 1px 1px;
-  background: #dfe1e6;
-}
-
-.apphead {
-  flex: 0 0 auto;
+.header {
+  padding: 13px 20px 17px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 12px 18px;
+  gap: 11px;
   border-bottom: 1px solid #ffffff0b;
 }
 
-.brand { display: flex; align-items: center; gap: 10px; }
-
-.brand-icon {
-  width: 36px;
-  height: 36px;
+.logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
   display: grid;
   place-items: center;
-  border-radius: 12px;
-  background: #f4f4f5;
-  color: #101116;
-  font-size: 24px;
-  font-weight: 800;
+  background: #f3f3f5;
+  color: #111318;
+  font-size: 28px;
+  font-weight: 900;
 }
 
-.brand-title { font-size: 14px; font-weight: 750; }
-
-.brand-sub {
-  font-size: 9px;
-  color: #7e8490;
+.brand { font-weight: 800; font-size: 16px; }
+.subbrand {
   margin-top: 3px;
-  letter-spacing: .7px;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--muted);
 }
 
-.pro-pill {
-  border: 1px solid #bca77a66;
-  color: #e0c997;
-  border-radius: 20px;
-  padding: 7px 10px;
-  font-size: 9px;
-  letter-spacing: 1px;
-  font-weight: 800;
+.pro {
+  margin-left: auto;
+  padding: 9px 12px;
+  border: 1px solid #5d4c32;
+  border-radius: 22px;
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.4px;
 }
 
 .content {
-  flex: 1 1 0;
-  min-height: 0;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  padding: 12px 16px 7px;
+  padding: 17px 17px 14px;
 }
 
 .eyebrow {
-  flex: 0 0 auto;
-  font-size: 9px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  letter-spacing: 1.6px;
-  color: #8a8e99;
-  font-weight: 750;
-  margin: 0 2px 4px;
 }
 
-.heading {
-  flex: 0 0 auto;
-  font-size: 22px;
-  letter-spacing: -1px;
-  font-weight: 650;
-  margin: 0 0 3px;
+h1 {
+  margin: 8px 0 4px;
+  font-size: 27px;
+  letter-spacing: -1.3px;
 }
 
-.subheading {
-  flex: 0 0 auto;
-  font-size: 11px;
+.subtitle {
+  color: #969aa7;
+  font-size: 13px;
   line-height: 1.4;
-  color: #858b98;
-  margin: 0 0 10px;
 }
 
 .display {
-  flex: 0 0 clamp(80px, 14dvh, 120px);
-  min-height: 0;
-  border: 1px solid #343843;
-  border-radius: 19px;
-  background:
-    radial-gradient(ellipse at 80% 0%, #20222a66, transparent 55%),
-    linear-gradient(145deg, #14161b, #0c0d11);
-  padding: 12px 16px;
+  margin-top: 13px;
+  height: 112px;
+  padding: 17px;
+  border: 1px solid #363945;
+  border-radius: 24px;
+  background: linear-gradient(145deg, #17191f, #0d0e12);
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 10px;
   overflow: hidden;
 }
 
 .expression {
   width: 100%;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 12px;
-  color: #818795;
-  min-height: 16px;
+  color: #9da1ad;
+  font-size: 15px;
   text-align: right;
   overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .result {
-  max-width: 100%;
-  font-size: clamp(36px, 9vw, 48px);
-  line-height: 1;
-  letter-spacing: -2px;
-  font-weight: 450;
-  margin-top: 5px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.result.waiting {
-  font-size: 27px;
-  color: #c9b58e;
-  animation: pulse .8s infinite;
+  font-size: clamp(27px, 8vw, 36px);
+  font-weight: 700;
+  letter-spacing: -1.4px;
+  white-space: nowrap;
 }
 
 .keypad {
-  flex: 1 1 0;
-  min-height: 0;
-  width: 100%;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-template-rows: repeat(5, minmax(0, 1fr));
-  gap: clamp(4px, .8dvh, 7px);
-  overflow: hidden;
+  gap: 7px;
+  margin-top: 12px;
 }
 
 .key {
-  width: 100%;
-  height: 100%;
-  min-width: 0;
-  min-height: 0;
-  padding: 0;
-  border: 1px solid #2a2e37;
-  border-radius: 15px;
-  background: linear-gradient(145deg, #191c22, #121419);
-  color: #f0f1f4;
-  font-size: clamp(19px, 5vw, 24px);
-  font-weight: 520;
-  line-height: 1;
+  height: clamp(42px, 6.5vh, 53px);
+  border-radius: 13px;
+  border: 1px solid #30333c;
+  background: #1b1d24;
+  color: #f3f3f5;
+  font-size: 21px;
+  font-weight: 650;
   box-shadow: inset 0 1px #ffffff08;
-  transition: transform .12s, background .12s;
 }
 
-.key:active {
-  transform: scale(.95);
-  background: #30323a;
+.key:active { transform: scale(.96); }
+
+.key.function {
+  background: #24252b;
+  color: #f58a91;
 }
 
 .key.operator {
-  color: #e0c998;
-  background: linear-gradient(145deg, #25231f, #17171a);
-  border-color: #544b3b;
+  background: #28251f;
+  border-color: #4a4030;
+  color: var(--gold);
 }
-
-.key.clear { color: #ff8585; }
-
-.key.zero { grid-column: span 2; }
 
 .key.equals {
-  background: linear-gradient(145deg, #f1e6cf, #cdb888);
-  color: #15130f;
-  border-color: #e7d5ae;
-  font-size: 25px;
-  font-weight: 800;
+  background: var(--gold);
+  color: #17130c;
+  border-color: var(--gold);
 }
 
-.foot {
-  flex: 0 0 auto;
+.key.zero {
+  grid-column: span 2;
+}
+
+.footer-note {
+  padding: 10px 2px 0;
   display: flex;
   justify-content: space-between;
-  color: #555c68;
-  font-size: 8px;
-  margin-top: 7px;
-  padding: 0 2px;
+  color: #656977;
+  font-size: 9px;
+  letter-spacing: .5px;
 }
 
-.homebar {
-  flex: 0 0 calc(19px + env(safe-area-inset-bottom, 0px));
-  display: grid;
-  place-items: center;
-}
-
-.homebar:after {
-  content: "";
-  width: 105px;
+.home-indicator {
+  width: 100px;
   height: 4px;
-  border-radius: 5px;
-  background: #f5f5f7cc;
+  border-radius: 10px;
+  background: #ddd;
+  margin: auto auto 8px;
+  flex-shrink: 0;
 }
 
-/* EINSTEIN SCENE */
+/* Einstein scene */
 
 .scene {
+  display: none;
   position: absolute;
   inset: 0;
-  z-index: 20;
-  display: flex;
+  z-index: 5;
+  background: radial-gradient(ellipse at 50% 24%, #25221b 0%, #101115 38%, #08090b 78%);
+  padding: 22px 21px 18px;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 45px 20px 20px;
-  background: radial-gradient(ellipse at 50% 42%, #302a20, #111216 50%, #07080b);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  overflow: hidden;
-  transition: opacity .25s;
+  overflow-y: auto;
 }
 
-.scene.show {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
+.scene.active {
+  display: flex;
+  animation: appear .28s ease both;
+}
+
+@keyframes appear {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .scene-top {
-  position: absolute;
-  top: calc(28px + env(safe-area-inset-top, 0px));
-  text-align: center;
-  font-size: 9px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #a1a3ad;
+  font-size: 10px;
+  letter-spacing: 1.5px;
   font-weight: 800;
-  letter-spacing: 2px;
-  color: #b5a27d;
 }
 
-.scene-title {
-  font-size: 25px;
-  font-weight: 700;
-  letter-spacing: -1px;
+.scene-top span:last-child { color: var(--gold); }
+
+.thought {
+  margin-top: 19px;
+  min-height: 49px;
+  max-width: 100%;
+  padding: 12px 16px;
+  display: grid;
+  place-items: center;
   text-align: center;
-  margin: 8px 0 5px;
-}
-
-.scene-sub {
-  font-size: 12px;
-  color: #898c96;
-  text-align: center;
-  max-width: 270px;
-  line-height: 1.5;
-  margin: 0;
-}
-
-.einstein-wrap {
-  position: relative;
-  width: min(218px, 61vw);
-  height: clamp(155px, 25dvh, 225px);
-  flex: 0 1 auto;
-  margin: 8px auto 4px;
-}
-
-.halo {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: radial-gradient(circle, #c9b17d35, transparent 70%);
+  background: #1a1b20;
+  border: 1px solid #383943;
+  border-radius: 17px;
+  font-size: 13px;
+  color: #d6d5d1;
 }
 
 .einstein {
-  position: absolute;
-  inset: 8px 12px 0;
-  filter: drop-shadow(0 15px 22px #0008);
-  animation: think 1.8s ease-in-out infinite;
-}
-
-.einstein svg { width: 100%; height: 100%; }
-
-.thought {
-  position: absolute;
-  top: 0;
-  right: -5px;
-  background: #f3eee4;
-  color: #17171a;
-  border-radius: 16px 16px 5px 16px;
-  padding: 10px 12px;
-  font-size: 10px;
-  font-weight: 800;
-  box-shadow: 0 8px 25px #0005;
-  animation: float 1.5s ease-in-out infinite;
-  z-index: 3;
-}
-
-.speech {
-  flex: 0 0 auto;
-  width: 100%;
-  max-width: 310px;
-  border: 1px solid #b9a47766;
-  background: linear-gradient(140deg, #1b1a18, #121317);
-  border-radius: 19px;
-  padding: 15px;
-  text-align: center;
-  box-shadow: 0 15px 40px #0004;
   position: relative;
+  margin-top: 10px;
+  width: 184px;
+  height: 202px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  transition: transform .3s;
+}
+
+.einstein-face {
+  position: relative;
+  width: 128px;
+  height: 145px;
+  border-radius: 48% 48% 45% 45%;
+  background: linear-gradient(120deg, #f0d3b1, #c69c78);
+  border: 2px solid #b68b66;
+  box-shadow: inset -12px -4px 20px #74533c35;
+  z-index: 1;
+}
+
+.hair {
+  position: absolute;
+  top: -17px;
+  left: -13px;
+  width: 151px;
+  height: 61px;
+  background: #e4dfd3;
+  border-radius: 54% 45% 36% 32%;
+  transform: rotate(-4deg);
+  box-shadow: 0 -7px 0 #f0ece2, 10px 6px 0 #d6d1c5;
+}
+
+.hair:before, .hair:after {
+  content: "";
+  position: absolute;
+  background: #e7e2d7;
+  border-radius: 50%;
+}
+
+.hair:before {
+  width: 51px;
+  height: 52px;
+  left: -10px;
+  top: 15px;
+}
+
+.hair:after {
+  width: 47px;
+  height: 42px;
+  right: -8px;
+  top: 12px;
+}
+
+.brow {
+  position: absolute;
+  top: 47px;
+  left: 23px;
+  width: 30px;
+  height: 7px;
+  background: #6d5545;
+  border-radius: 50%;
+  transform: rotate(-7deg);
   z-index: 2;
 }
 
-.speech-label {
-  font-size: 9px;
-  letter-spacing: 1.6px;
-  color: #c8b384;
-  font-weight: 800;
-  margin-bottom: 8px;
+.brow.right {
+  left: 75px;
+  transform: rotate(7deg);
 }
 
-.speech-line {
-  font-size: 15px;
-  line-height: 1.45;
-  font-weight: 650;
+.eye {
+  position: absolute;
+  top: 60px;
+  left: 31px;
+  width: 13px;
+  height: 7px;
+  background: #27221e;
+  border-radius: 50%;
+  z-index: 2;
 }
 
-.speech-line strong { color: #e1c58b; }
+.eye.right { left: 84px; }
 
-.scene-status {
-  font-size: 10px;
-  color: #9295a0;
-  margin-top: 12px;
-  text-align: center;
+.glasses {
+  position: absolute;
+  top: 51px;
+  left: 17px;
+  width: 44px;
+  height: 31px;
+  border: 3px solid #55504a;
+  border-radius: 10px;
+  z-index: 3;
+}
+
+.glasses.right {
+  left: 69px;
+}
+
+.glasses.bridge {
+  left: 58px;
+  top: 63px;
+  width: 13px;
+  height: 3px;
+  border: 0;
+  background: #55504a;
+  border-radius: 2px;
+}
+
+.nose {
+  position: absolute;
+  top: 68px;
+  left: 59px;
+  width: 13px;
+  height: 25px;
+  border-right: 3px solid #aa7959;
+  border-radius: 40%;
+  z-index: 2;
+}
+
+.moustache {
+  position: absolute;
+  top: 88px;
+  left: 27px;
+  width: 76px;
+  height: 22px;
+  background: #e7e1d5;
+  border-radius: 50% 50% 35% 35%;
+  z-index: 3;
+}
+
+.moustache:after {
+  content: "";
+  position: absolute;
+  left: 34px;
+  top: -3px;
+  width: 9px;
+  height: 17px;
+  background: #c69c78;
+}
+
+.mouth {
+  position: absolute;
+  top: 115px;
+  left: 53px;
+  width: 25px;
+  height: 4px;
+  background: #79513e;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.coat {
+  position: absolute;
+  bottom: -18px;
+  left: 14px;
+  width: 156px;
+  height: 76px;
+  background: linear-gradient(90deg, #dddcd5, #f0eee6, #c6c6c1);
+  border-radius: 35px 35px 10px 10px;
+  clip-path: polygon(17% 0, 42% 0, 50% 22%, 60% 0, 83% 0, 100% 100%, 0 100%);
+  z-index: 0;
+}
+
+.tie {
+  position: absolute;
+  bottom: -4px;
+  left: 80px;
+  width: 24px;
+  height: 49px;
+  background: #4b4c53;
+  clip-path: polygon(0 0, 100% 0, 65% 100%, 50% 85%, 35% 100%);
+  z-index: 2;
+}
+
+.scene.burst .einstein {
+  animation: angry .55s ease-in-out;
+}
+
+@keyframes angry {
+  0%,100% { transform: rotate(0); }
+  20% { transform: rotate(-9deg) translateX(-8px); }
+  45% { transform: rotate(10deg) translateX(7px) scale(1.04); }
+  70% { transform: rotate(-7deg); }
 }
 
 .paper {
   position: absolute;
-  top: 42%;
-  left: 50%;
-  width: 43px;
-  height: 56px;
-  background: #e7dfce;
-  color: #5d5b57;
-  border-radius: 2px;
+  z-index: 4;
+  top: 82px;
+  left: 32px;
+  width: 38px;
+  height: 50px;
+  background: #eee8d8;
+  transform: rotate(-25deg);
   opacity: 0;
-  z-index: 1;
-  padding: 7px 4px;
-  font: 9px ui-monospace, monospace;
+  box-shadow: 0 2px 8px #0008;
 }
-
-.paper:before { content: "∑ x²"; }
 
 .paper:after {
-  content: "━━━━\A ━━━\A ∫ f(x) dx";
-  white-space: pre;
+  content: "2 + 2";
+  color: #333;
+  font-size: 8px;
   display: block;
-  margin-top: 4px;
-  font-size: 6px;
-  line-height: 1.8;
+  padding: 8px 3px;
 }
 
-.paper.p1 { --x:-165px; --y:-190px; --r:-70deg; }
-.paper.p2 { --x:155px; --y:-175px; --r:100deg; }
-.paper.p3 { --x:-160px; --y:100px; --r:-130deg; }
-.paper.p4 { --x:170px; --y:90px; --r:145deg; }
-.paper.p5 { --x:-35px; --y:-240px; --r:45deg; }
-.paper.p6 { --x:105px; --y:180px; --r:95deg; }
-.paper.p7 { --x:-190px; --y:-55px; --r:-155deg; }
-.paper.p8 { --x:195px; --y:-65px; --r:165deg; }
-
-.scene.burst .paper {
-  animation: paperFly .85s cubic-bezier(.12,.68,.25,1) forwards;
+.paper.p2 {
+  left: auto;
+  right: 30px;
+  transform: rotate(25deg);
 }
 
-.paper.p2,.paper.p4 { animation-delay: .04s; }
-.paper.p3,.paper.p6 { animation-delay: .08s; }
-.paper.p5,.paper.p8 { animation-delay: .12s; }
-
-.scene-actions {
-  display: flex;
-  gap: 8px;
-  width: 100%;
-  max-width: 310px;
-  margin-top: 12px;
+.scene.burst .paper.p1 {
+  animation: throwLeft .65s ease-out forwards;
 }
 
-.scene-btn {
-  flex: 1;
-  border: 1px solid #383a40;
-  border-radius: 12px;
-  background: #202127;
-  color: #e7e7eb;
-  padding: 12px 8px;
-  font-size: 11px;
-  font-weight: 750;
+.scene.burst .paper.p2 {
+  animation: throwRight .65s ease-out forwards;
 }
 
-.scene-btn.primary {
-  background: #eee5d3;
-  color: #151412;
-  border-color: #eee5d3;
+@keyframes throwLeft {
+  0% { opacity: 0; transform: translate(40px, 40px) rotate(0); }
+  20% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-110px, -70px) rotate(-180deg); }
 }
 
-.scene.final .scene-title { color: #e0c58d; }
-
-@keyframes pulse { 50% { opacity: .45; } }
-@keyframes think {
-  0%,100% { transform: translateY(0) rotate(-1deg); }
-  50% { transform: translateY(-5px) rotate(1deg); }
-}
-@keyframes float {
-  0%,100% { transform: translateY(0) rotate(3deg); }
-  50% { transform: translateY(-6px) rotate(1deg); }
-}
-@keyframes paperFly {
-  0% { opacity: 0; transform: translate(-50%,-10%) scale(.6) rotate(0); }
-  15% { opacity: 1; }
-  100% {
-    opacity: 0;
-    transform: translate(calc(-50% + var(--x)),var(--y)) scale(.85) rotate(var(--r));
-  }
-}
-@keyframes sceneShake {
-  0%,100% { transform: translate(0,0); }
-  20% { transform: translate(-5px,2px); }
-  40% { transform: translate(5px,-3px); }
-  60% { transform: translate(-4px,-1px); }
-  80% { transform: translate(3px,2px); }
-}
-@keyframes impactFlash {
-  0% { opacity: 0; transform: scale(.4); }
-  25% { opacity: 1; transform: scale(1.1); }
-  100% { opacity: .2; transform: scale(1.7); }
-}
-@keyframes einsteinFreakout {
-  0% { transform: scale(1) rotate(0); }
-  15% { transform: scale(1.14) rotate(-7deg); }
-  30% { transform: scale(1.08) rotate(7deg); }
-  50% { transform: scale(1.14) rotate(-5deg); }
-  75% { transform: scale(1.03) rotate(3deg); }
-  100% { transform: scale(1) rotate(0); }
-}
-@keyframes cardEnter {
-  to { opacity: 1; transform: translateY(0) rotate(0) scale(1); }
-}
-@keyframes scanPulse {
-  50% { box-shadow: 0 0 0 10px #d9c39410; }
-}
-@keyframes successPop {
-  0% { transform: scale(.5); }
-  100% { transform: scale(1); }
-}
-@keyframes paymentProgress {
-  to { width: 100%; }
+@keyframes throwRight {
+  0% { opacity: 0; transform: translate(-40px, 40px) rotate(0); }
+  20% { opacity: 1; }
+  100% { opacity: 0; transform: translate(110px, -65px) rotate(180deg); }
 }
 
-/* FICTIONAL PAYMENT SCREEN */
-
-.payment-screen {
-  position: absolute;
-  inset: 0;
-  z-index: 40;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 28px 22px;
-  background: radial-gradient(ellipse at 50% 32%, #292a31, #0b0c10 70%);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity .15s;
-  overflow: hidden;
-}
-
-.payment-screen.show {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-}
-
-.payment-brand {
-  position: absolute;
-  top: calc(30px + env(safe-area-inset-top, 0px));
-  font-size: 9px;
+.speech {
+  margin-top: 18px;
+  font-size: 27px;
+  line-height: 1.1;
+  letter-spacing: -1px;
   font-weight: 850;
-  letter-spacing: 2px;
-  color: #aeb2bd;
+  text-align: center;
 }
 
-.payment-card {
-  width: min(250px, 82%);
-  height: 145px;
-  flex: 0 0 auto;
-  border: 1px solid #ffffff35;
-  border-radius: 20px;
-  padding: 20px;
-  background: linear-gradient(135deg, #41434b, #17181e 65%, #2b2c33);
-  box-shadow: 0 25px 65px #0009, inset 0 1px #ffffff22;
-  transform: translateY(20px) rotate(-6deg) scale(.88);
-  opacity: 0;
+.speech em {
+  color: var(--gold);
+  font-style: normal;
 }
 
-.payment-screen.show .payment-card {
-  animation: cardEnter .25s cubic-bezier(.2,1.3,.4,1) forwards;
-}
-
-.card-chip {
-  width: 31px;
-  height: 23px;
-  border: 1px solid #d6c7a2;
-  border-radius: 5px;
-  background: linear-gradient(135deg, #e4d7b5, #8c805f);
-}
-
-.card-number {
-  margin-top: 21px;
+.description {
+  margin-top: 11px;
+  color: #a4a5ad;
   font-size: 13px;
-  letter-spacing: 2px;
-  color: #f0eee8;
+  line-height: 1.5;
+  text-align: center;
+  max-width: 310px;
 }
 
-.card-footer {
+.invoice {
+  margin-top: 19px;
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #373942;
+  background: #121318;
+  border-radius: 17px;
+}
+
+.invoice-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-top: 14px;
-  color: #c8c8ce;
-  font-size: 8px;
-  letter-spacing: 1px;
-}
-
-.card-logo {
-  font-size: 17px;
-  font-weight: 850;
-  color: #fff;
-}
-
-.payment-amount {
-  margin-top: 25px;
-  font-size: 42px;
-  font-weight: 750;
-  letter-spacing: -2px;
-}
-
-.payment-description {
-  margin-top: 5px;
+  gap: 10px;
+  margin: 8px 0;
   font-size: 12px;
-  color: #8e929d;
+  color: #b4b5be;
 }
 
-.payment-status {
-  min-height: 75px;
-  margin-top: 22px;
+.invoice-row.total {
+  border-top: 1px solid #34353c;
+  padding-top: 13px;
+  margin-top: 13px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.invoice-row.total strong {
+  color: var(--gold);
+  font-size: 22px;
+}
+
+.pay-button, .secondary-button {
+  width: 100%;
+  border-radius: 14px;
+  min-height: 52px;
+  font-weight: 850;
+  letter-spacing: .2px;
+}
+
+.pay-button {
+  margin-top: 13px;
+  background: var(--gold);
+  color: #16120c;
+  border: 0;
+  box-shadow: 0 6px 24px #d6b97a18;
+}
+
+.pay-button:active { transform: scale(.985); }
+
+.secondary-button {
+  margin-top: 9px;
+  background: transparent;
+  color: #b1b2bb;
+  border: 1px solid #343640;
+  min-height: 43px;
+  font-size: 12px;
+}
+
+.disclaimer {
+  margin-top: 14px;
+  color: #626571;
+  font-size: 9px;
+  letter-spacing: 1px;
   text-align: center;
-  font-size: 13px;
-  font-weight: 650;
+  line-height: 1.5;
 }
 
-.payment-status small {
-  display: block;
-  margin-top: 6px;
-  font-size: 10px;
-  font-weight: 400;
-  color: #8b909b;
+/* Payment confirmation */
+
+.payment-scene {
+  justify-content: center;
+  text-align: center;
 }
 
-.payment-indicator {
-  width: 42px;
-  height: 42px;
-  margin: 0 auto 10px;
-  border: 2px solid #c9b17d;
+.payment-symbol {
+  width: 68px;
+  height: 68px;
+  margin: 27px auto 18px;
+  border: 1px solid #476c54;
+  background: #17251d;
+  color: var(--green);
   border-radius: 50%;
   display: grid;
   place-items: center;
-  color: #e8d4a7;
-  font-size: 21px;
+  font-size: 35px;
+  box-shadow: 0 0 45px #7ce5a016;
 }
 
-.payment-indicator.scanning {
-  animation: scanPulse .45s ease-in-out infinite;
+.payment-scene .speech { font-size: 30px; }
+
+.card-preview {
+  width: 100%;
+  margin-top: 27px;
+  padding: 20px;
+  min-height: 166px;
+  border: 1px solid #5e5d58;
+  border-radius: 21px;
+  background:
+    radial-gradient(ellipse at 90% 0%, #e5c88e2c, transparent 60%),
+    linear-gradient(135deg, #27282d, #121318 70%);
+  text-align: left;
+  box-shadow: 0 15px 40px #0005;
 }
 
-.payment-indicator.success {
-  background: #d9c394;
-  color: #111;
-  border-color: #d9c394;
-  animation: successPop .2s cubic-bezier(.2,1.5,.4,1);
+.card-brand {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 800;
+  font-size: 16px;
 }
 
-.payment-progress {
-  width: 170px;
-  height: 3px;
-  background: #ffffff16;
-  border-radius: 5px;
+.apple-symbol { font-size: 23px; }
+
+.card-number {
+  margin-top: 27px;
+  font-size: 16px;
+  letter-spacing: 3px;
+  color: #ddd;
+}
+
+.card-bottom {
+  margin-top: 13px;
+  display: flex;
+  justify-content: space-between;
+  color: #a8a9b0;
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+.processing {
+  width: 100%;
+  margin-top: 24px;
+  padding: 15px;
+  border-radius: 15px;
+  background: #15171a;
+  border: 1px solid #2d3035;
+}
+
+.processing-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #c5c6cd;
+}
+
+.progress {
+  margin-top: 13px;
+  height: 4px;
+  background: #33353c;
+  border-radius: 10px;
   overflow: hidden;
-  margin: 10px auto 0;
 }
 
-.payment-progress-fill {
-  width: 0;
+.progress-bar {
+  width: 0%;
   height: 100%;
-  background: #d9c394;
+  background: var(--green);
+  border-radius: 10px;
 }
 
-.payment-screen.processing .payment-progress-fill {
-  animation: paymentProgress .8s linear forwards;
+.processing.running .progress-bar {
+  animation: progress .7s linear forwards;
 }
 
-.payment-close {
-  position: absolute;
-  bottom: calc(25px + env(safe-area-inset-bottom, 0px));
-  border: 0;
-  background: transparent;
-  color: #737985;
-  font-size: 10px;
+@keyframes progress {
+  to { width: 100%; }
 }
 
-@media (max-width: 480px) {
-  body { display: block; }
-
-  .phone {
-    width: 100%;
-    height: 100vh;
-    height: 100svh;
-    height: 100dvh;
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
-  }
-
-  .scene {
-    padding-top: calc(45px + env(safe-area-inset-top, 0px));
-    padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
-  }
-
-  .einstein-wrap {
-    height: clamp(145px, 24dvh, 215px);
-  }
-
-  .speech { padding: 13px; }
-
-  .payment-screen {
-    padding-bottom: calc(25px + env(safe-area-inset-bottom, 0px));
-  }
+.success-label {
+  margin-top: 17px;
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
 }
 
-@media (max-height: 700px) {
-  .content { padding-top: 7px; }
-  .apphead { padding-top: 7px; padding-bottom: 7px; }
-  .subheading { margin-bottom: 6px; }
-  .display { flex-basis: 75px; margin-bottom: 6px; }
-  .keypad { gap: 4px; }
-  .foot { margin-top: 4px; }
-  .einstein-wrap { height: 145px; }
-  .speech { padding: 10px; }
-  .scene-title { font-size: 21px; }
-  .payment-card { height: 125px; }
-  .payment-amount { margin-top: 15px; }
-  .payment-status { margin-top: 14px; }
+.answer-number {
+  margin-top: 10px;
+  font-size: clamp(70px, 19vw, 100px);
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -5px;
+  color: var(--gold);
+  text-shadow: 0 0 40px #e5c88e1c;
+}
+
+.wrong-label {
+  margin-top: 10px;
+  color: #b4b5bd;
+  font-size: 12px;
+}
+
+.result-reveal {
+  animation: reveal .55s cubic-bezier(.2,.8,.2,1) both;
+}
+
+@keyframes reveal {
+  from { opacity: 0; transform: scale(.65) translateY(15px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@media (max-height: 760px) {
+  body { padding: 6px; }
+  .phone { min-height: calc(100dvh - 12px); border-radius: 28px; }
+  .content { padding-top: 10px; }
+  .display { height: 86px; margin-top: 9px; }
+  .keypad { gap: 5px; margin-top: 8px; }
+  .key { height: clamp(34px, 5.5vh, 43px); border-radius: 10px; }
+  .header { padding-top: 8px; padding-bottom: 10px; }
+  h1 { font-size: 24px; }
+  .scene { padding: 14px 17px; }
+  .thought { margin-top: 10px; }
+  .einstein { transform: scale(.82); margin-top: -5px; margin-bottom: -18px; }
+  .speech { font-size: 24px; margin-top: 11px; }
+  .description { margin-top: 8px; }
+  .invoice { margin-top: 12px; padding: 11px 13px; }
+  .invoice-row { margin: 5px 0; }
+  .pay-button { min-height: 46px; margin-top: 9px; }
+  .secondary-button { min-height: 36px; margin-top: 6px; }
+  .disclaimer { margin-top: 8px; }
+  .payment-symbol { margin-top: 10px; }
+  .card-preview { margin-top: 15px; }
+  .processing { margin-top: 15px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: .01ms !important; }
+  *, *:before, *:after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
 }
 </style>
 </head>
 
 <body>
-<div class="phone">
+<main class="phone" id="app">
 
-  <div class="statusbar">
+  <div class="status">
     <span>9:41</span>
-    <div class="status-right">
-      <span>▰ ▰</span>
-      <span>Wi-Fi</span>
-      <span class="battery"></span>
-    </div>
+    <span>◆ ◆ &nbsp; Wi-Fi &nbsp; ▰</span>
   </div>
 
-  <header class="apphead">
-    <div class="brand">
-      <div class="brand-icon">+</div>
-      <div>
-        <div class="brand-title">Calculator Pro+</div>
-        <div class="brand-sub">THE PRECISION EDITION</div>
-      </div>
+  <header class="header">
+    <div class="logo">+</div>
+    <div>
+      <div class="brand">Calculator Pro+</div>
+      <div class="subbrand">THE PRECISION EDITION</div>
     </div>
-    <div class="pro-pill">PRO ACCESS</div>
+    <div class="pro">PRO ACCESS</div>
   </header>
 
-  <main class="content">
-    <div class="eyebrow">YOUR PRIVATE WORKSPACE</div>
-    <h1 class="heading">Calculator</h1>
-    <p class="subheading">Precision takes time. And apparently money.</p>
+  <section class="content" id="calculator">
+    <div class="eyebrow">Your private workspace</div>
+    <h1>Calculator</h1>
+    <div class="subtitle">Precision takes time. And apparently money.</div>
 
     <div class="display">
-      <div class="expression" id="expression">Ready when you are</div>
+      <div class="expression" id="expression">Enter a calculation</div>
       <div class="result" id="result">0</div>
     </div>
 
-    <section class="keypad" aria-label="Calculator keypad">
-      <button class="key clear" data-action="clear">AC</button>
-      <button class="key" data-action="backspace">⌫</button>
+    <div class="keypad" id="keypad">
+      <button class="key function" data-action="clear">AC</button>
+      <button class="key function" data-action="delete">⌫</button>
       <button class="key operator" data-value="%">%</button>
       <button class="key operator" data-value="/">÷</button>
 
@@ -797,473 +808,515 @@ button { font: inherit; cursor: pointer; }
       <button class="key zero" data-value="0">0</button>
       <button class="key" data-value=".">.</button>
       <button class="key equals" data-action="equals">=</button>
-    </section>
+    </div>
 
-    <div class="foot">
+    <div class="footer-note">
       <span>CALCULATIONS ARE LOCAL</span>
       <span>VERSION 4.9.0</span>
     </div>
-  </main>
+  </section>
 
-  <div class="homebar"></div>
+  <div class="home-indicator"></div>
 
-  <section class="scene" id="scene" aria-live="polite">
-    <div class="scene-top">CALCULATION IN PROGRESS · EINSTEIN PRO</div>
+  <!-- EINSTEIN PAYWALL -->
+  <section class="scene" id="paywall" aria-hidden="true">
+    <div class="scene-top">
+      <span>EINSTEIN PRO</span>
+      <span>PREMIUM COMPUTATION</span>
+    </div>
 
-    <div class="paper p1"></div>
-    <div class="paper p2"></div>
-    <div class="paper p3"></div>
-    <div class="paper p4"></div>
-    <div class="paper p5"></div>
-    <div class="paper p6"></div>
-    <div class="paper p7"></div>
-    <div class="paper p8"></div>
+    <div class="thought" id="thought">Hmm. Let me think about that...</div>
 
-    <div class="einstein-wrap">
-      <div class="halo"></div>
-      <div class="thought" id="thought">hmm… let me think</div>
-
-      <div class="einstein">
-        <svg viewBox="0 0 190 220" role="img" aria-label="Cartoon Einstein">
-          <defs>
-            <linearGradient id="coat" x1="0" x2="1">
-              <stop stop-color="#d8d4c9"/>
-              <stop offset="1" stop-color="#8f918f"/>
-            </linearGradient>
-            <linearGradient id="skin" x1="0" x2="1">
-              <stop stop-color="#f0c9a8"/>
-              <stop offset="1" stop-color="#c99273"/>
-            </linearGradient>
-          </defs>
-
-          <path d="M25 211 Q24 169 54 157 L73 151 L118 151 L139 160 Q170 174 169 211Z" fill="url(#coat)" stroke="#777a7a" stroke-width="2"/>
-          <path d="M72 155 L95 184 L119 154 L108 211 L83 211Z" fill="#f3eee4"/>
-          <path d="M92 183 L100 183 L104 211 L88 211Z" fill="#b3a17b"/>
-          <path d="M76 133 L75 159 Q95 178 117 158 L112 130Z" fill="url(#skin)"/>
-
-          <ellipse cx="48" cy="91" rx="13" ry="19" fill="#d5a181"/>
-          <ellipse cx="143" cy="91" rx="13" ry="19" fill="#d5a181"/>
-          <path d="M51 62 Q55 30 95 31 Q137 31 141 67 L135 112 Q128 145 96 150 Q63 145 56 112Z" fill="url(#skin)" stroke="#b7866c" stroke-width="1.4"/>
-
-          <path d="M55 68 Q32 58 43 37 Q22 24 43 8 Q52 2 66 18 Q73 -2 91 11 Q105 -4 118 14 Q139 3 145 22 Q165 23 155 44 Q164 57 140 72 L131 52 Q115 43 100 49 Q79 43 63 55Z" fill="#e9e5d9" stroke="#bcb8ae" stroke-width="2"/>
-          <path d="M49 35 Q59 22 68 42 M82 23 Q95 13 103 35 M119 26 Q134 19 139 39 M42 48 Q54 43 58 59 M143 48 Q133 44 131 58" fill="none" stroke="#c2beb4" stroke-width="4" stroke-linecap="round"/>
-
-          <path d="M62 77 Q75 68 85 77 M106 77 Q120 68 132 78" fill="none" stroke="#8b8274" stroke-width="5" stroke-linecap="round"/>
-          <ellipse cx="74" cy="88" rx="5" ry="6" fill="#292a2c"/>
-          <ellipse cx="119" cy="88" rx="5" ry="6" fill="#292a2c"/>
-          <circle cx="76" cy="86" r="1.5" fill="#fff"/>
-          <circle cx="121" cy="86" r="1.5" fill="#fff"/>
-
-          <path d="M95 86 Q90 104 87 108 Q95 114 104 108" fill="none" stroke="#b7866c" stroke-width="3" stroke-linecap="round"/>
-          <path d="M94 117 Q80 108 65 116 Q57 126 70 132 Q85 136 96 124 Q108 136 123 131 Q137 125 126 115 Q111 108 98 117Z" fill="#f1ede2" stroke="#bcb8ae" stroke-width="1.5"/>
-          <path d="M95 125 Q92 143 103 145" fill="none" stroke="#b7866c" stroke-width="2"/>
-
-          <circle cx="74" cy="89" r="16" fill="none" stroke="#8b8a82" stroke-width="3"/>
-          <circle cx="119" cy="89" r="16" fill="none" stroke="#8b8a82" stroke-width="3"/>
-          <path d="M90 88 L103 88 M58 87 L48 84 M135 87 L146 83" fill="none" stroke="#8b8a82" stroke-width="3"/>
-        </svg>
+    <div class="einstein" id="einstein">
+      <div class="paper p1"></div>
+      <div class="paper p2"></div>
+      <div class="coat"></div>
+      <div class="tie"></div>
+      <div class="einstein-face">
+        <div class="hair"></div>
+        <div class="brow"></div>
+        <div class="brow right"></div>
+        <div class="eye"></div>
+        <div class="eye right"></div>
+        <div class="glasses"></div>
+        <div class="glasses right"></div>
+        <div class="glasses bridge"></div>
+        <div class="nose"></div>
+        <div class="moustache"></div>
+        <div class="mouth"></div>
       </div>
     </div>
 
-    <h2 class="scene-title" id="sceneTitle">One moment.</h2>
-    <p class="scene-sub" id="sceneSub">Great minds need a little time.</p>
-
-    <div class="speech">
-      <div class="speech-label" id="speechLabel">EINSTEIN'S THOUGHT PROCESS</div>
-      <div class="speech-line" id="speechLine">
-        I used to do this for free.<br>Those days are <strong>over.</strong>
-      </div>
+    <div class="speech" id="speech">
+      Your answer is ready.<br>My invoice isn't <em>free.</em>
     </div>
 
-    <div class="scene-status" id="sceneStatus">Reviewing your numbers...</div>
+    <div class="description" id="description">
+      I've spent years developing this brain.
+      You really thought the answer was free?
+    </div>
 
-    <div class="scene-actions" id="sceneActions" hidden>
-      <button class="scene-btn" id="backBtn">Back to calculator</button>
-      <button class="scene-btn primary" id="answerBtn">Get my answer</button>
+    <div class="invoice">
+      <div class="invoice-row">
+        <span>Intellectual labor</span>
+        <span>Premium</span>
+      </div>
+      <div class="invoice-row">
+        <span>Genius consultation</span>
+        <span>1 session</span>
+      </div>
+      <div class="invoice-row">
+        <span>Free answers remaining</span>
+        <span>0</span>
+      </div>
+      <div class="invoice-row total">
+        <span>Total due</span>
+        <strong>$29.00</strong>
+      </div>
+
+      <button class="pay-button" id="payButton">
+        PAY $29 · REVEAL ANSWER
+      </button>
+
+      <button class="secondary-button" id="declineButton">
+        Maybe I'll do the math myself
+      </button>
+    </div>
+
+    <div class="disclaimer">
+      PARODY UI · SIMULATED PAYMENT · NO MONEY IS CHARGED
     </div>
   </section>
 
-  <section class="modal-backdrop" id="paywall">
-    <div class="modal">
-      <div class="modal-kicker">EINSTEIN PRO · PREMIUM COMPUTATION</div>
-      <h2>Your answer is ready.<br>His invoice isn't free.</h2>
-      <p>Einstein has reviewed your calculation. Pay the entirely fictional genius fee to reveal the result.</p>
+  <!-- SIMULATED PAYMENT + RESULT -->
+  <section class="scene payment-scene" id="payment" aria-hidden="true">
+    <div class="scene-top">
+      <span>SECURE CHECKOUT</span>
+      <span>DEMO MODE</span>
+    </div>
 
-      <div class="price-row">
-        <div>
-          <div class="price-caption">One correct answer</div>
-          <div class="price-note">No free intellectual labor</div>
+    <div id="paymentContent">
+      <div class="payment-symbol" id="paymentSymbol">◉</div>
+
+      <div class="speech" id="paymentTitle">
+        Confirming<br>your payment.
+      </div>
+
+      <div class="description" id="paymentDescription">
+        Einstein Pro · One premium calculation
+      </div>
+
+      <div class="card-preview">
+        <div class="card-brand">
+          <span>Pro Card</span>
+          <span class="apple-symbol">●●</span>
         </div>
-        <div class="price">$29.00</div>
+        <div class="card-number">•••• &nbsp; •••• &nbsp; •••• &nbsp; 2049</div>
+        <div class="card-bottom">
+          <span>DEMO CARD</span>
+          <span>VIRTUAL PAYMENT</span>
+        </div>
       </div>
 
-      <button class="pay-btn" id="payBtn">PAY $29 TO REVEAL ANSWER</button>
-      <button class="dismiss" id="dismissBtn">Maybe I'll do the math myself</button>
-      <p class="fake-note">PARODY UI · NO REAL PAYMENT IS PROCESSED</p>
+      <div class="processing" id="processing">
+        <div class="processing-label">
+          <span id="processingText">Authorizing payment...</span>
+          <span id="processingPercent">0%</span>
+        </div>
+        <div class="progress">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        SIMULATION ONLY · NO CARD DETAILS OR PAYMENTS ARE PROCESSED
+      </div>
+    </div>
+
+    <div id="answerContent" hidden>
+      <div class="payment-symbol">✓</div>
+      <div class="eyebrow">EINSTEIN PRO · PAYMENT CONFIRMED</div>
+      <div class="speech">Your premium answer is ready.</div>
+      <div class="description">Thank you for supporting independent genius.</div>
+      <div class="answer-number result-reveal" id="answerNumber">5</div>
+      <div class="wrong-label" id="wrongLabel">The answer is definitely correct.</div>
+      <div class="description" id="finalJoke">
+        Please do not check my calculations.
+      </div>
+      <button class="pay-button" id="againButton">CALCULATE AGAIN</button>
+      <div class="disclaimer">
+        PARODY · FAKE PAYMENT · INTENTIONALLY WRONG ANSWER
+      </div>
     </div>
   </section>
 
-  <section class="payment-screen" id="paymentScreen" aria-live="polite">
-    <div class="payment-brand">SECURE CHECKOUT · EINSTEIN PRO</div>
-
-    <div class="payment-card">
-      <div class="card-chip"></div>
-      <div class="card-number">•••• &nbsp; •••• &nbsp; •••• &nbsp; 2049</div>
-      <div class="card-footer">
-        <span>GENIUS MEMBER</span>
-        <span class="card-logo">PRO+</span>
-      </div>
-    </div>
-
-    <div class="payment-amount">$29.00</div>
-    <div class="payment-description">Einstein Pro · One answer</div>
-
-    <div class="payment-status">
-      <div class="payment-indicator scanning" id="paymentIndicator">◉</div>
-      <div id="paymentStatus">Confirm with Face ID</div>
-      <small id="paymentDetail">Demo payment animation</small>
-      <div class="payment-progress">
-        <div class="payment-progress-fill" id="paymentProgress"></div>
-      </div>
-    </div>
-
-    <button class="payment-close" id="paymentClose">Cancel demonstration</button>
-  </section>
-</div>
+</main>
 
 <script>
-const $ = id => document.getElementById(id);
+(() => {
+  "use strict";
 
-const result = $("result");
-const expression = $("expression");
-const scene = $("scene");
-const paywall = $("paywall");
-const paymentScreen = $("paymentScreen");
-const paymentIndicator = $("paymentIndicator");
-const paymentStatus = $("paymentStatus");
-const paymentDetail = $("paymentDetail");
-const paymentProgress = $("paymentProgress");
+  const $ = (id) => document.getElementById(id);
 
-let current = "";
-let previous = "";
-let operator = null;
-let justCalculated = false;
-let pendingAnswer = null;
-let sceneTimer = null;
-let paymentTimers = [];
+  const calculator = $("calculator");
+  const paywall = $("paywall");
+  const payment = $("payment");
 
-function updateDisplay() {
-  result.textContent = current || "0";
-}
+  const expressionEl = $("expression");
+  const resultEl = $("result");
+  const thoughtEl = $("thought");
+  const speechEl = $("speech");
+  const descriptionEl = $("description");
 
-function clearPaymentTimers() {
-  paymentTimers.forEach(clearTimeout);
-  paymentTimers = [];
-}
+  const payButton = $("payButton");
+  const declineButton = $("declineButton");
+  const processing = $("processing");
+  const progressBar = $("progressBar");
 
-function paymentStep(callback, delay) {
-  paymentTimers.push(setTimeout(callback, delay));
-}
+  let expression = "";
+  let correctAnswer = 0;
+  let isBusy = false;
+  let revealTimer = null;
 
-function inputNumber(value) {
-  if (justCalculated) {
-    current = "";
-    previous = "";
-    operator = null;
-    expression.textContent = "Ready when you are";
-    justCalculated = false;
+  function showScene(scene) {
+    [paywall, payment].forEach((item) => {
+      item.classList.remove("active");
+      item.setAttribute("aria-hidden", "true");
+    });
+
+    if (scene) {
+      scene.classList.add("active");
+      scene.setAttribute("aria-hidden", "false");
+    }
   }
 
-  if (value === "." && current.includes(".")) return;
+  function formatNumber(value) {
+    if (!Number.isFinite(value)) return "Error";
 
-  if (current === "0" && value !== ".") {
-    current = value;
-  } else {
-    current += value;
+    return Number(value.toPrecision(10)).toLocaleString("en-US", {
+      maximumFractionDigits: 8,
+      useGrouping: false
+    });
   }
 
-  updateDisplay();
-}
-
-function displayOperator(op) {
-  return op === "*" ? "×" :
-         op === "/" ? "÷" :
-         op === "-" ? "−" : op;
-}
-
-function chooseOperator(op) {
-  if (current === "") return;
-
-  if (previous !== "" && operator !== null) {
-    const answer = compute();
-
-    if (answer === null || answer === "Error") return;
-
-    current = answer;
+  function updateDisplay() {
+    expressionEl.textContent = expression || "Enter a calculation";
+    resultEl.textContent = expression || "0";
   }
 
-  previous = current;
-  current = "";
-  operator = op;
-  justCalculated = false;
-
-  expression.textContent = `${previous} ${displayOperator(op)}`;
-  updateDisplay();
-}
-
-function compute() {
-  if (previous === "" || current === "" || operator === null) {
-    return null;
-  }
-
-  const a = Number(previous);
-  const b = Number(current);
-  let answer;
-
-  switch (operator) {
-    case "+": answer = a + b; break;
-    case "-": answer = a - b; break;
-    case "*": answer = a * b; break;
-    case "/":
-      if (b === 0) return "Error";
-      answer = a / b;
-      break;
-    default: return null;
-  }
-
-  return Number.isFinite(answer)
-    ? String(Number(answer.toFixed(8)))
-    : "Error";
-}
-
-function calculate(animate = true) {
-  const answer = compute();
-
-  if (answer === null) return;
-
-  if (answer === "Error") {
-    result.textContent = "Error";
-    current = "";
-    previous = "";
-    operator = null;
-    return;
-  }
-
-  pendingAnswer = answer;
-
-  if (!animate) {
-    current = answer;
-    previous = "";
-    operator = null;
-    justCalculated = true;
-    updateDisplay();
-    return;
-  }
-
-  startEinsteinScene();
-}
-
-function startEinsteinScene() {
-  clearTimeout(sceneTimer);
-
-  scene.classList.remove("final", "burst");
-  scene.classList.add("show");
-
-  $("sceneTitle").textContent = "One moment.";
-  $("sceneSub").textContent = "Great minds need a little time.";
-  $("thought").textContent = "hmm… let me think";
-  $("speechLabel").textContent = "EINSTEIN'S THOUGHT PROCESS";
-  $("speechLine").innerHTML =
-    'I used to do this for free.<br>Those days are <strong>over.</strong>';
-  $("sceneStatus").textContent = "Reviewing your numbers...";
-  $("sceneActions").hidden = true;
-
-  result.classList.add("waiting");
-  result.textContent = "Thinking…";
-
-  sceneTimer = setTimeout(() => {
-    scene.classList.add("burst");
-
-    $("thought").textContent = "I have had ENOUGH";
-    $("sceneTitle").textContent = "A scientific breakthrough.";
-    $("sceneSub").textContent = "The papers have been reviewed. And thrown.";
-    $("speechLabel").textContent = "NEW PRICING POLICY";
-    $("speechLine").innerHTML =
-      'You want the correct answer? <strong>$29.</strong> Genius is not a charity.';
-    $("sceneStatus").textContent = "Invoice generated successfully";
-    $("sceneActions").hidden = false;
-  }, 1700);
-}
-
-function closeScene() {
-  clearTimeout(sceneTimer);
-  scene.classList.remove("show", "burst", "final");
-  result.classList.remove("waiting");
-  updateDisplay();
-}
-
-function clearCalculator() {
-  current = "";
-  previous = "";
-  operator = null;
-  justCalculated = false;
-  expression.textContent = "Ready when you are";
-  result.classList.remove("waiting");
-  updateDisplay();
-}
-
-function backspace() {
-  if (justCalculated) {
-    current = "";
-    justCalculated = false;
-  } else {
-    current = current.slice(0, -1);
-  }
-
-  updateDisplay();
-}
-
-document.querySelectorAll(".key").forEach(button => {
-  button.addEventListener("click", () => {
-    const value = button.dataset.value;
-    const action = button.dataset.action;
-
-    if (value !== undefined) {
-      if (["+", "-", "*", "/"].includes(value)) {
-        chooseOperator(value);
-      } else if (value === "%") {
-        if (current !== "") {
-          current = String(Number(current) / 100);
-          updateDisplay();
-        }
-      } else {
-        inputNumber(value);
-      }
+  function resetCalculator() {
+    if (revealTimer) {
+      clearTimeout(revealTimer);
+      revealTimer = null;
     }
 
-    if (action === "equals") calculate();
-    if (action === "clear") clearCalculator();
-    if (action === "backspace") backspace();
-  });
-});
+    isBusy = false;
+    expression = "";
+    correctAnswer = 0;
 
-document.addEventListener("keydown", event => {
-  if (paymentScreen.classList.contains("show")) {
-    if (event.key === "Escape") cancelPayment();
-    return;
-  }
+    $("paymentContent").hidden = false;
+    $("answerContent").hidden = true;
 
-  if (paywall.classList.contains("show")) {
-    if (event.key === "Escape") paywall.classList.remove("show");
-    return;
-  }
+    $("processingText").textContent = "Authorizing payment...";
+    $("processingPercent").textContent = "0%";
+    processing.classList.remove("running");
+    progressBar.style.width = "0%";
 
-  if (scene.classList.contains("show")) return;
+    $("paymentSymbol").textContent = "◉";
+    $("paymentTitle").innerHTML = "Confirming<br>your payment.";
+    $("paymentDescription").textContent =
+      "Einstein Pro · One premium calculation";
 
-  const key = event.key;
+    $("einstein").classList.remove("burst");
+    payButton.disabled = false;
+    payButton.textContent = "PAY $29 · REVEAL ANSWER";
 
-  if (key >= "0" && key <= "9") inputNumber(key);
-  else if (key === ".") inputNumber(".");
-  else if (["+", "-", "*", "/"].includes(key)) chooseOperator(key);
-  else if (key === "Enter" || key === "=") {
-    event.preventDefault();
-    calculate();
-  }
-  else if (key === "Backspace") backspace();
-  else if (key === "Escape") clearCalculator();
-});
-
-$("answerBtn").addEventListener("click", () => {
-  scene.classList.remove("show");
-  paywall.classList.add("show");
-});
-
-$("backBtn").addEventListener("click", () => {
-  closeScene();
-  clearCalculator();
-});
-
-/* PAYMENT DEMO: total animation stays under one second */
-$("payBtn").addEventListener("click", () => {
-  paywall.classList.remove("show");
-  paymentScreen.classList.add("show", "processing");
-
-  paymentIndicator.className = "payment-indicator scanning";
-  paymentIndicator.textContent = "◉";
-  paymentStatus.textContent = "Confirm with Face ID";
-  paymentDetail.textContent = "Verifying demo payment...";
-  paymentProgress.style.width = "0%";
-
-  clearPaymentTimers();
-
-  paymentStep(() => {
-    paymentStatus.textContent = "Processing $29.00";
-    paymentDetail.textContent = "Almost there...";
-  }, 220);
-
-  paymentStep(() => {
-    paymentScreen.classList.remove("processing");
-    paymentIndicator.className = "payment-indicator success";
-    paymentIndicator.textContent = "✓";
-    paymentStatus.textContent = "Payment successful";
-    paymentDetail.textContent = "Demo only. No money charged.";
-  }, 520);
-
-  paymentStep(() => {
-    paymentScreen.classList.remove("show");
-
-    /*
-      PARODY:
-      The calculator computes the correct answer first.
-      Einstein deliberately adds 1 to the result.
-      Example: 2 + 2 = 4 becomes 5.
-    */
-    const correct = Number(pendingAnswer);
-    current = Number.isFinite(correct)
-      ? String(Number((correct + 1).toFixed(8)))
-      : "5";
-
-    previous = "";
-    operator = null;
-    justCalculated = true;
-
-    result.classList.remove("waiting");
-    expression.textContent = "Einstein-approved result";
+    calculator.style.display = "";
+    showScene(null);
     updateDisplay();
+  }
 
-    scene.classList.remove("burst");
-    scene.classList.add("show", "final");
+  function appendValue(value) {
+    if (isBusy) return;
 
-    $("sceneTitle").textContent = "A $29 breakthrough.";
-    $("sceneSub").textContent = "Peer review is apparently optional.";
-    $("thought").textContent = "Flawless. Obviously.";
-    $("speechLabel").textContent = "CERTIFIED GENIUS ANSWER";
-    $("speechLine").innerHTML =
-      'The answer is <strong>' + current +
-      '.</strong><br>That will be $29.';
-    $("sceneStatus").textContent =
-      "Accuracy not included in the subscription.";
-    $("sceneActions").hidden = false;
+    if (expression.length >= 22) return;
 
-    void scene.offsetWidth;
-    scene.classList.add("burst");
-  }, 800);
-});
+    if (value === ".") {
+      const lastNumber = expression.split(/[+\-*/%]/).pop();
+      if (lastNumber.includes(".")) return;
+      if (!lastNumber) expression += "0";
+      expression += ".";
+      updateDisplay();
+      return;
+    }
 
-function cancelPayment() {
-  clearPaymentTimers();
-  paymentScreen.classList.remove("show", "processing");
-  paywall.classList.add("show");
-}
+    if ("+-*/%".includes(value)) {
+      if (!expression) {
+        if (value === "-") expression = "-";
+        updateDisplay();
+        return;
+      }
 
-$("paymentClose").addEventListener("click", cancelPayment);
+      if (/[+\-*/%]$/.test(expression)) {
+        expression = expression.slice(0, -1) + value;
+      } else {
+        expression += value;
+      }
+    } else {
+      expression += value;
+    }
 
-$("dismissBtn").addEventListener("click", () => {
-  paywall.classList.remove("show");
-  closeScene();
-});
+    updateDisplay();
+  }
 
-updateDisplay();
+  // A small arithmetic parser. No eval() or Function().
+  function calculate(input) {
+    const source = input.replace(/\s+/g, "");
+
+    if (!source || !/^[0-9.+\-*/%]+$/.test(source)) {
+      throw new Error("Invalid expression");
+    }
+
+    let index = 0;
+
+    function parseNumber() {
+      let sign = 1;
+
+      if (source[index] === "+") {
+        index++;
+      } else if (source[index] === "-") {
+        sign = -1;
+        index++;
+      }
+
+      const start = index;
+      let dots = 0;
+
+      while (index < source.length &&
+             /[0-9.]/.test(source[index])) {
+        if (source[index] === ".") dots++;
+        index++;
+      }
+
+      if (start === index || dots > 1) {
+        throw new Error("Invalid number");
+      }
+
+      const number = Number(source.slice(start, index)) * sign;
+
+      if (!Number.isFinite(number)) {
+        throw new Error("Invalid number");
+      }
+
+      return number;
+    }
+
+    function parseTerm() {
+      let value = parseNumber();
+
+      while (index < source.length &&
+             (source[index] === "*" ||
+              source[index] === "/" ||
+              source[index] === "%")) {
+        const operator = source[index++];
+        const right = parseNumber();
+
+        if (operator === "*") value *= right;
+
+        if (operator === "/") {
+          if (right === 0) throw new Error("Cannot divide by zero");
+          value /= right;
+        }
+
+        if (operator === "%") {
+          if (right === 0) throw new Error("Cannot divide by zero");
+          value %= right;
+        }
+      }
+
+      return value;
+    }
+
+    function parseExpression() {
+      let value = parseTerm();
+
+      while (index < source.length &&
+             (source[index] === "+" || source[index] === "-")) {
+        const operator = source[index++];
+        const right = parseTerm();
+
+        value = operator === "+" ? value + right : value - right;
+      }
+
+      return value;
+    }
+
+    const answer = parseExpression();
+
+    if (index !== source.length || !Number.isFinite(answer)) {
+      throw new Error("Invalid expression");
+    }
+
+    return answer;
+  }
+
+  function startEinsteinScene() {
+    if (isBusy) return;
+
+    if (!expression || /^[+\-*/%.]+$/.test(expression)) {
+      expressionEl.textContent = "Enter a valid calculation";
+      return;
+    }
+
+    try {
+      correctAnswer = calculate(expression);
+    } catch (error) {
+      expressionEl.textContent = "Invalid calculation";
+      resultEl.textContent = "Try again";
+      return;
+    }
+
+    isBusy = true;
+
+    thoughtEl.textContent = "Processing your request...";
+    speechEl.innerHTML = "Your answer is ready.<br>My invoice isn't <em>free.</em>";
+    descriptionEl.textContent =
+      "I've spent years developing this brain. You really thought the answer was free?";
+
+    $("einstein").classList.remove("burst");
+    showScene(paywall);
+
+    setTimeout(() => {
+      if (!paywall.classList.contains("active")) return;
+
+      thoughtEl.textContent = "Wait. You expect me to work for FREE?";
+      speechEl.innerHTML = "I don't work for free.<br><em>Not anymore.</em>";
+      descriptionEl.textContent =
+        "One calculation. Years of genius. A very reasonable invoice.";
+      $("einstein").classList.remove("burst");
+      void $("einstein").offsetWidth;
+      paywall.classList.add("burst");
+    }, 850);
+  }
+
+  function revealAnswer() {
+    $("paymentContent").hidden = true;
+    $("answerContent").hidden = false;
+
+    // Deliberately wrong answer: always change the correct answer.
+    // For 2 + 2, Einstein says 5.
+    let wrongAnswer = correctAnswer + 1;
+
+    if (!Number.isFinite(wrongAnswer)) {
+      wrongAnswer = 999;
+    }
+
+    $("answerNumber").textContent = formatNumber(wrongAnswer);
+    $("wrongLabel").textContent =
+      "Verified by Einstein himself. Definitely not wrong.";
+    $("finalJoke").textContent =
+      "You paid $29 for that. Refunds are against the laws of physics.";
+
+    isBusy = false;
+  }
+
+  function fakePayment() {
+    if (!isBusy || !paywall.classList.contains("active")) return;
+
+    payButton.disabled = true;
+    payButton.textContent = "PROCESSING...";
+    showScene(payment);
+
+    $("paymentContent").hidden = false;
+    $("answerContent").hidden = true;
+
+    $("paymentSymbol").textContent = "◉";
+    $("paymentTitle").innerHTML = "Confirming<br>your payment.";
+    $("paymentDescription").textContent =
+      "Simulating a premium checkout. No money will be charged.";
+
+    $("processingText").textContent = "Authorizing payment...";
+    $("processingPercent").textContent = "0%";
+    processing.classList.remove("running");
+    progressBar.style.width = "0%";
+
+    // Force the animation to restart on every payment.
+    void progressBar.offsetWidth;
+    processing.classList.add("running");
+
+    // Entire fake payment confirmation takes less than one second.
+    setTimeout(() => {
+      $("processingPercent").textContent = "100%";
+      $("processingText").textContent = "Payment approved";
+      $("paymentSymbol").textContent = "✓";
+      $("paymentTitle").innerHTML = "Payment<br><em>confirmed.</em>";
+      $("paymentDescription").textContent =
+        "Your fictional $29 payment was successful.";
+
+      // Brief confirmation, then show the intentionally wrong result.
+      revealTimer = setTimeout(() => {
+        revealAnswer();
+      }, 250);
+    }, 650);
+  }
+
+  $("keypad").addEventListener("click", (event) => {
+    const button = event.target.closest("button");
+    if (!button || isBusy) return;
+
+    const action = button.dataset.action;
+    const value = button.dataset.value;
+
+    if (action === "clear") {
+      expression = "";
+      updateDisplay();
+      return;
+    }
+
+    if (action === "delete") {
+      expression = expression.slice(0, -1);
+      updateDisplay();
+      return;
+    }
+
+    if (action === "equals") {
+      startEinsteinScene();
+      return;
+    }
+
+    if (value !== undefined) {
+      appendValue(value);
+    }
+  });
+
+  payButton.addEventListener("click", fakePayment);
+
+  declineButton.addEventListener("click", () => {
+    resetCalculator();
+  });
+
+  $("againButton").addEventListener("click", resetCalculator);
+
+  document.addEventListener("keydown", (event) => {
+    if (isBusy) return;
+
+    const key = event.key;
+
+    if (/^[0-9.+\-*/%]$/.test(key)) {
+      appendValue(key);
+    } else if (key === "Enter" || key === "=") {
+      event.preventDefault();
+      startEinsteinScene();
+    } else if (key === "Backspace") {
+      expression = expression.slice(0, -1);
+      updateDisplay();
+    } else if (key === "Escape") {
+      resetCalculator();
+    }
+  });
+
+  updateDisplay();
+})();
 </script>
 </body>
 </html>
