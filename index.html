@@ -11,12 +11,9 @@
 :root {
   color-scheme: dark;
   --bg: #08090c;
-  --panel: #111318;
-  --line: #292d36;
-  --muted: #858b98;
   --white: #f5f5f7;
   --gold: #d8bd86;
-  --red: #ff7777;
+  --muted: #858b98;
 }
 
 * {
@@ -27,9 +24,9 @@
 html, body {
   margin: 0;
   width: 100%;
-  min-height: 100%;
+  height: 100%;
   font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: #050609;
+  background: #08090c;
   color: var(--white);
 }
 
@@ -38,50 +35,36 @@ body {
   min-height: 100dvh;
   display: grid;
   place-items: center;
-  padding: 18px;
-  background: radial-gradient(ellipse at 50% 0%, #1b1c22, #08090c 48%, #050609);
 }
 
-button {
-  font: inherit;
-}
+button { font: inherit; cursor: pointer; }
 
 .phone {
   position: relative;
   width: min(100%, 410px);
-  height: min(850px, calc(100dvh - 36px));
+  height: min(850px, 100dvh);
   min-height: 0;
   overflow: hidden;
   border: 1px solid #353943;
-  border-radius: 34px;
+  border-radius: 30px;
   background: linear-gradient(160deg, #121419, #090a0e 70%);
-  box-shadow: 0 30px 100px #000a, inset 0 0 0 5px #0005;
+  box-shadow: 0 30px 100px #000a;
   display: flex;
   flex-direction: column;
 }
 
 .statusbar {
-  flex: 0 0 31px;
-  height: 31px;
+  flex: 0 0 calc(30px + env(safe-area-inset-top, 0px));
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 24px;
+  padding: env(safe-area-inset-top, 0px) 24px 0;
   color: #d8d9dd;
   font-size: 11px;
-  font-weight: 650;
+  font-weight: 700;
 }
 
-.status-right {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-}
-
-.signal {
-  font-size: 10px;
-  letter-spacing: -2px;
-}
+.status-right { display: flex; gap: 7px; align-items: center; }
 
 .battery {
   width: 17px;
@@ -98,63 +81,41 @@ button {
   background: #dfe1e6;
 }
 
-.battery:after {
-  content: "";
-  position: absolute;
-  right: -3px;
-  top: 2px;
-  width: 2px;
-  height: 3px;
-  background: #b7bbc3;
-}
-
 .apphead {
   flex: 0 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 13px 21px 18px;
+  padding: 12px 18px;
   border-bottom: 1px solid #ffffff0b;
 }
 
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  min-width: 0;
-}
+.brand { display: flex; align-items: center; gap: 10px; }
 
 .brand-icon {
-  width: 38px;
-  height: 38px;
-  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
   display: grid;
   place-items: center;
-  border-radius: 13px;
+  border-radius: 12px;
   background: #f4f4f5;
   color: #101116;
   font-size: 24px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
-.brand-title {
-  font-size: 15px;
-  font-weight: 750;
-  letter-spacing: -.4px;
-}
+.brand-title { font-size: 14px; font-weight: 750; }
 
 .brand-sub {
-  font-size: 10px;
+  font-size: 9px;
   color: #7e8490;
   margin-top: 3px;
-  letter-spacing: .4px;
+  letter-spacing: .7px;
 }
 
 .pro-pill {
-  flex-shrink: 0;
   border: 1px solid #bca77a66;
   color: #e0c997;
-  background: #c7a96c0d;
   border-radius: 20px;
   padding: 7px 10px;
   font-size: 9px;
@@ -165,64 +126,61 @@ button {
 .content {
   flex: 1 1 0;
   min-height: 0;
-  min-width: 0;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  padding: 22px 20px 12px;
-  overflow: hidden;
+  padding: 12px 16px 7px;
 }
 
 .eyebrow {
   flex: 0 0 auto;
-  font-size: 10px;
+  font-size: 9px;
   text-transform: uppercase;
-  letter-spacing: 1.9px;
+  letter-spacing: 1.6px;
   color: #8a8e99;
   font-weight: 750;
-  margin: 1px 2px 7px;
+  margin: 0 2px 4px;
 }
 
 .heading {
   flex: 0 0 auto;
-  font-size: 24px;
-  line-height: 1.15;
+  font-size: 22px;
   letter-spacing: -1px;
   font-weight: 650;
-  margin: 0 0 5px;
+  margin: 0 0 3px;
 }
 
 .subheading {
   flex: 0 0 auto;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1.4;
-  color: #747b87;
-  margin: 0 0 19px;
+  color: #858b98;
+  margin: 0 0 10px;
 }
 
 .display {
-  flex: 0 0 136px;
+  flex: 0 0 clamp(80px, 14dvh, 120px);
   min-height: 0;
   border: 1px solid #343843;
-  border-radius: 22px;
+  border-radius: 19px;
   background:
     radial-gradient(ellipse at 80% 0%, #20222a66, transparent 55%),
     linear-gradient(145deg, #14161b, #0c0d11);
-  padding: 20px;
+  padding: 12px 16px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-end;
-  box-shadow: inset 0 1px #ffffff08;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   overflow: hidden;
 }
 
 .expression {
   width: 100%;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 13px;
+  font-size: 12px;
   color: #818795;
-  min-height: 20px;
+  min-height: 16px;
   text-align: right;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -231,23 +189,21 @@ button {
 
 .result {
   max-width: 100%;
-  font-size: 52px;
-  line-height: 1.05;
-  letter-spacing: -2.5px;
+  font-size: clamp(36px, 9vw, 48px);
+  line-height: 1;
+  letter-spacing: -2px;
   font-weight: 450;
-  margin-top: 7px;
+  margin-top: 5px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .result.waiting {
-  font-size: 30px;
-  letter-spacing: -.8px;
+  font-size: 27px;
   color: #c9b58e;
-  animation: pulse 1s ease-in-out infinite;
+  animation: pulse .8s infinite;
 }
 
-/* THE IMPORTANT PART: the keypad gets the remaining height */
 .keypad {
   flex: 1 1 0;
   min-height: 0;
@@ -255,8 +211,7 @@ button {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-template-rows: repeat(5, minmax(0, 1fr));
-  gap: 9px;
-  align-content: stretch;
+  gap: clamp(4px, .8dvh, 7px);
   overflow: hidden;
 }
 
@@ -266,22 +221,20 @@ button {
   min-width: 0;
   min-height: 0;
   padding: 0;
-  margin: 0;
   border: 1px solid #2a2e37;
-  border-radius: 17px;
+  border-radius: 15px;
   background: linear-gradient(145deg, #191c22, #121419);
   color: #f0f1f4;
-  font-size: 20px;
-  line-height: 1;
+  font-size: clamp(19px, 5vw, 24px);
   font-weight: 520;
+  line-height: 1;
   box-shadow: inset 0 1px #ffffff08;
-  cursor: pointer;
-  transition: transform .12s, background .12s, border-color .12s;
+  transition: transform .12s, background .12s;
 }
 
 .key:active {
-  transform: scale(.96);
-  background: #272a32;
+  transform: scale(.95);
+  background: #30323a;
 }
 
 .key.operator {
@@ -290,38 +243,30 @@ button {
   border-color: #544b3b;
 }
 
-.key.clear {
-  color: #ff8585;
-}
+.key.clear { color: #ff8585; }
 
-.key.zero {
-  grid-column: span 2;
-}
+.key.zero { grid-column: span 2; }
 
 .key.equals {
   background: linear-gradient(145deg, #f1e6cf, #cdb888);
   color: #15130f;
   border-color: #e7d5ae;
-  font-size: 24px;
-  font-weight: 750;
-  box-shadow: 0 5px 20px #b99c5d1c;
+  font-size: 25px;
+  font-weight: 800;
 }
 
 .foot {
   flex: 0 0 auto;
   display: flex;
   justify-content: space-between;
-  gap: 8px;
   color: #555c68;
-  font-size: 9px;
-  margin-top: 12px;
+  font-size: 8px;
+  margin-top: 7px;
   padding: 0 2px;
-  line-height: 1.3;
 }
 
 .homebar {
-  flex: 0 0 23px;
-  height: 23px;
+  flex: 0 0 calc(19px + env(safe-area-inset-bottom, 0px));
   display: grid;
   place-items: center;
 }
@@ -344,13 +289,13 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px 22px 24px;
-  background: radial-gradient(ellipse at 50% 45%, #25231f, #111216 48%, #07080b);
+  padding: 45px 20px 20px;
+  background: radial-gradient(ellipse at 50% 42%, #302a20, #111216 50%, #07080b);
   opacity: 0;
-  pointer-events: none;
   visibility: hidden;
-  transition: opacity .35s ease;
+  pointer-events: none;
   overflow: hidden;
+  transition: opacity .25s;
 }
 
 .scene.show {
@@ -361,22 +306,20 @@ button {
 
 .scene-top {
   position: absolute;
-  top: 30px;
-  left: 0;
-  right: 0;
+  top: calc(28px + env(safe-area-inset-top, 0px));
   text-align: center;
   font-size: 9px;
   font-weight: 800;
-  letter-spacing: 2.2px;
+  letter-spacing: 2px;
   color: #b5a27d;
 }
 
 .scene-title {
   font-size: 25px;
-  font-weight: 650;
+  font-weight: 700;
   letter-spacing: -1px;
   text-align: center;
-  margin: 12px 0 5px;
+  margin: 8px 0 5px;
 }
 
 .scene-sub {
@@ -390,48 +333,40 @@ button {
 
 .einstein-wrap {
   position: relative;
-  width: 218px;
-  height: 225px;
-  margin: 10px auto 5px;
+  width: min(218px, 61vw);
+  height: clamp(155px, 25dvh, 225px);
   flex: 0 1 auto;
+  margin: 8px auto 4px;
 }
 
 .halo {
   position: absolute;
-  width: 200px;
-  height: 200px;
+  inset: 0;
   border-radius: 50%;
-  background: radial-gradient(circle, #c9b17d30, transparent 68%);
-  left: 9px;
-  top: 20px;
+  background: radial-gradient(circle, #c9b17d35, transparent 70%);
 }
 
 .einstein {
   position: absolute;
-  inset: 17px 18px 0;
+  inset: 8px 12px 0;
   filter: drop-shadow(0 15px 22px #0008);
-  animation: think 2.3s ease-in-out infinite;
+  animation: think 1.8s ease-in-out infinite;
 }
 
-.einstein svg {
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
+.einstein svg { width: 100%; height: 100%; }
 
 .thought {
   position: absolute;
   top: 0;
-  right: -4px;
+  right: -5px;
   background: #f3eee4;
   color: #17171a;
-  border-radius: 18px 18px 5px 18px;
-  padding: 11px 14px;
+  border-radius: 16px 16px 5px 16px;
+  padding: 10px 12px;
   font-size: 10px;
-  font-weight: 750;
+  font-weight: 800;
   box-shadow: 0 8px 25px #0005;
-  transform: rotate(3deg);
-  animation: float 2s ease-in-out infinite;
+  animation: float 1.5s ease-in-out infinite;
   z-index: 3;
 }
 
@@ -439,11 +374,10 @@ button {
   flex: 0 0 auto;
   width: 100%;
   max-width: 310px;
-  min-height: 100px;
-  border: 1px solid #b9a47755;
+  border: 1px solid #b9a47766;
   background: linear-gradient(140deg, #1b1a18, #121317);
   border-radius: 19px;
-  padding: 18px;
+  padding: 15px;
   text-align: center;
   box-shadow: 0 15px 40px #0004;
   position: relative;
@@ -452,85 +386,76 @@ button {
 
 .speech-label {
   font-size: 9px;
-  letter-spacing: 1.8px;
+  letter-spacing: 1.6px;
   color: #c8b384;
   font-weight: 800;
-  margin-bottom: 9px;
+  margin-bottom: 8px;
 }
 
 .speech-line {
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.45;
-  letter-spacing: -.3px;
-  font-weight: 600;
+  font-weight: 650;
 }
 
-.speech-line strong {
-  color: #e1c58b;
-}
+.speech-line strong { color: #e1c58b; }
 
 .scene-status {
   font-size: 10px;
   color: #9295a0;
-  margin-top: 15px;
-  letter-spacing: .3px;
+  margin-top: 12px;
   text-align: center;
 }
 
 .paper {
   position: absolute;
-  top: 40%;
+  top: 42%;
   left: 50%;
-  width: 48px;
-  height: 62px;
+  width: 43px;
+  height: 56px;
   background: #e7dfce;
   color: #5d5b57;
   border-radius: 2px;
-  box-shadow: 0 10px 24px #0009, 0 0 0 1px #fff4;
   opacity: 0;
   z-index: 1;
-  font: 10px ui-monospace, monospace;
   padding: 7px 4px;
-  line-height: 1.7;
+  font: 9px ui-monospace, monospace;
 }
 
-.paper:before {
-  content: "∑ x²";
-}
+.paper:before { content: "∑ x²"; }
 
 .paper:after {
   content: "━━━━\A ━━━\A ∫ f(x) dx";
   white-space: pre;
   display: block;
-  margin-top: 3px;
+  margin-top: 4px;
   font-size: 6px;
   line-height: 1.8;
-  color: #77716a;
 }
+
+.paper.p1 { --x:-165px; --y:-190px; --r:-70deg; }
+.paper.p2 { --x:155px; --y:-175px; --r:100deg; }
+.paper.p3 { --x:-160px; --y:100px; --r:-130deg; }
+.paper.p4 { --x:170px; --y:90px; --r:145deg; }
+.paper.p5 { --x:-35px; --y:-240px; --r:45deg; }
+.paper.p6 { --x:105px; --y:180px; --r:95deg; }
+.paper.p7 { --x:-190px; --y:-55px; --r:-155deg; }
+.paper.p8 { --x:195px; --y:-65px; --r:165deg; }
 
 .scene.burst .paper {
-  animation: paperFly 1.1s cubic-bezier(.12,.68,.25,1) forwards;
+  animation: paperFly .85s cubic-bezier(.12,.68,.25,1) forwards;
 }
 
-.paper.p1 { --x:-175px; --y:-215px; --r:-70deg; }
-.paper.p2 { --x:155px; --y:-195px; --r:100deg; animation-delay:.06s; }
-.paper.p3 { --x:-165px; --y:105px; --r:-130deg; animation-delay:.1s; }
-.paper.p4 { --x:178px; --y:90px; --r:145deg; animation-delay:.04s; }
-.paper.p5 { --x:-45px; --y:-260px; --r:45deg; animation-delay:.12s; }
-.paper.p6 { --x:110px; --y:190px; --r:95deg; animation-delay:.08s; }
-.paper.p7 { --x:-205px; --y:-70px; --r:-155deg; animation-delay:.08s; }
-.paper.p8 { --x:205px; --y:-65px; --r:165deg; animation-delay:.12s; }
-.paper.p9 { --x:-90px; --y:220px; --r:-75deg; animation-delay:.16s; }
-.paper.p10 { --x:35px; --y:-235px; --r:130deg; animation-delay:.2s; }
-.paper.p11 { --x:195px; --y:165px; --r:205deg; animation-delay:.1s; }
-.paper.p12 { --x:-195px; --y:170px; --r:-190deg; animation-delay:.18s; }
+.paper.p2,.paper.p4 { animation-delay: .04s; }
+.paper.p3,.paper.p6 { animation-delay: .08s; }
+.paper.p5,.paper.p8 { animation-delay: .12s; }
 
 .scene-actions {
   display: flex;
   gap: 8px;
   width: 100%;
   max-width: 310px;
-  margin-top: 15px;
+  margin-top: 12px;
 }
 
 .scene-btn {
@@ -542,7 +467,6 @@ button {
   padding: 12px 8px;
   font-size: 11px;
   font-weight: 750;
-  cursor: pointer;
 }
 
 .scene-btn.primary {
@@ -551,566 +475,278 @@ button {
   border-color: #eee5d3;
 }
 
-.scene.final .scene-title {
-  color: #e0c58d;
-}
+.scene.final .scene-title { color: #e0c58d; }
 
-.dots:after {
-  content: "";
-  animation: dots 1.2s steps(4,end) infinite;
-}
-
-/* FICTIONAL PAYWALL */
-
-.modal-backdrop {
-  position: absolute;
-  inset: 0;
-  z-index: 30;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding: 12px;
-  background: #020306b8;
-  backdrop-filter: blur(13px);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity .25s;
-}
-
-.modal-backdrop.show {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-}
-
-.modal {
-  width: 100%;
-  border: 1px solid #45413a;
-  border-radius: 27px;
-  background: linear-gradient(150deg, #1c1b19, #101115 65%);
-  padding: 25px 22px 24px;
-  box-shadow: 0 20px 70px #000b;
-  transform: translateY(22px);
-  transition: transform .3s;
-}
-
-.modal-backdrop.show .modal {
-  transform: translateY(0);
-}
-
-.modal-kicker {
-  font-size: 9px;
-  color: #c9b17d;
-  letter-spacing: 2px;
-  font-weight: 850;
-  margin-bottom: 12px;
-}
-
-.modal h2 {
-  font-size: 25px;
-  letter-spacing: -.9px;
-  line-height: 1.15;
-  margin: 0 0 10px;
-}
-
-.modal p {
-  font-size: 12px;
-  line-height: 1.6;
-  color: #999ca5;
-  margin: 0 0 20px;
-}
-
-.price-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  border: 1px solid #36332d;
-  background: #171719;
-  border-radius: 16px;
-  padding: 16px;
-  margin-bottom: 12px;
-}
-
-.price-caption {
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.price-note {
-  font-size: 10px;
-  color: #777c85;
-  margin-top: 4px;
-}
-
-.price {
-  flex-shrink: 0;
-  font-size: 29px;
-  letter-spacing: -1px;
-  font-weight: 750;
-  color: #f0d8a2;
-}
-
-.pay-btn {
-  width: 100%;
-  min-height: 51px;
-  border: 0;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #f0e5ce, #cfb783);
-  color: #16140f;
-  font-size: 11px;
-  font-weight: 850;
-  letter-spacing: .5px;
-  cursor: pointer;
-}
-
-.dismiss {
-  width: 100%;
-  border: 0;
-  background: transparent;
-  color: #777b84;
-  font-size: 11px;
-  padding: 14px 0 2px;
-  cursor: pointer;
-}
-
-.fake-note {
-  font-size: 9px !important;
-  text-align: center;
-  margin: 13px 0 0 !important;
-  color: #676b74 !important;
-}
-
-/* ANIMATIONS */
-
-@keyframes pulse {
-  50% { opacity: .45; }
-}
-
+@keyframes pulse { 50% { opacity: .45; } }
 @keyframes think {
-  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  0%,100% { transform: translateY(0) rotate(-1deg); }
   50% { transform: translateY(-5px) rotate(1deg); }
 }
-
 @keyframes float {
-  0%, 100% { transform: translateY(0) rotate(3deg); }
+  0%,100% { transform: translateY(0) rotate(3deg); }
   50% { transform: translateY(-6px) rotate(1deg); }
 }
-
 @keyframes paperFly {
-  0% {
-    opacity: 0;
-    transform: translate(-50%,-10%) scale(.6) rotate(0);
-  }
+  0% { opacity: 0; transform: translate(-50%,-10%) scale(.6) rotate(0); }
   15% { opacity: 1; }
   100% {
     opacity: 0;
     transform: translate(calc(-50% + var(--x)),var(--y)) scale(.85) rotate(var(--r));
   }
 }
-
-@keyframes dots {
-  0% { content: ""; }
-  25% { content: "."; }
-  50% { content: ".."; }
-  75%, 100% { content: "..."; }
-}
-
-.scene:before {
-  content: "";
-  position: absolute;
-  inset: -20%;
-  pointer-events: none;
-  opacity: 0;
-  background: radial-gradient(ellipse at center, #d7b56c44, #a83a2b22 27%, transparent 65%);
-  transform: scale(.55);
-}
-
-.scene.burst:before {
-  animation: impactFlash .95s ease-out both;
-}
-
-.scene.burst {
-  animation: sceneShake .55s linear 1;
-}
-
-.scene.burst .einstein {
-  animation: einsteinFreakout .85s cubic-bezier(.2,.8,.2,1) both;
-  filter: drop-shadow(0 0 22px #d7b56c66) drop-shadow(0 15px 22px #0009);
-}
-
-.scene.burst .halo {
-  animation: haloPulse .8s ease-out both;
-}
-
-.scene.burst .thought {
-  animation: thoughtPop .35s cubic-bezier(.2,1.5,.5,1) both;
-  background: #f0d7a3;
-}
-
-.scene.burst .speech {
-  animation: speechImpact .45s cubic-bezier(.2,1.2,.4,1) both;
-  border-color: #d8bd86aa;
-  box-shadow: 0 0 35px #c5a35a22, 0 15px 40px #0007;
-}
-
-.scene.burst .scene-title {
-  animation: titleImpact .45s ease-out both;
-}
-
 @keyframes sceneShake {
-  0%, 100% { transform: translate(0,0); }
-  15% { transform: translate(-5px,2px); }
-  30% { transform: translate(5px,-3px); }
-  45% { transform: translate(-4px,-1px); }
-  60% { transform: translate(4px,2px); }
-  75% { transform: translate(-2px,0); }
+  0%,100% { transform: translate(0,0); }
+  20% { transform: translate(-5px,2px); }
+  40% { transform: translate(5px,-3px); }
+  60% { transform: translate(-4px,-1px); }
+  80% { transform: translate(3px,2px); }
 }
-
 @keyframes impactFlash {
-  0% { opacity: 0; transform: scale(.35); }
-  18% { opacity: 1; transform: scale(1.1); }
-  100% { opacity: .25; transform: scale(1.7); }
+  0% { opacity: 0; transform: scale(.4); }
+  25% { opacity: 1; transform: scale(1.1); }
+  100% { opacity: .2; transform: scale(1.7); }
 }
-
 @keyframes einsteinFreakout {
   0% { transform: scale(1) rotate(0); }
-  15% { transform: scale(1.13) rotate(-7deg); }
+  15% { transform: scale(1.14) rotate(-7deg); }
   30% { transform: scale(1.08) rotate(7deg); }
-  48% { transform: scale(1.15) rotate(-5deg); }
-  68% { transform: scale(1.04) rotate(3deg); }
+  50% { transform: scale(1.14) rotate(-5deg); }
+  75% { transform: scale(1.03) rotate(3deg); }
   100% { transform: scale(1) rotate(0); }
 }
-
-@keyframes haloPulse {
-  0% { transform: scale(.7); opacity: .2; }
-  35% { transform: scale(1.5); opacity: 1; }
-  100% { transform: scale(1.15); opacity: .7; }
+@keyframes cardEnter {
+  to { opacity: 1; transform: translateY(0) rotate(0) scale(1); }
+}
+@keyframes scanPulse {
+  50% { box-shadow: 0 0 0 10px #d9c39410; }
+}
+@keyframes successPop {
+  0% { transform: scale(.5); }
+  100% { transform: scale(1); }
+}
+@keyframes paymentProgress {
+  to { width: 100%; }
 }
 
-@keyframes thoughtPop {
-  0% { transform: scale(.5) rotate(-10deg); opacity: 0; }
-  100% { transform: scale(1.08) rotate(4deg); opacity: 1; }
+/* FICTIONAL PAYMENT SCREEN */
+
+.payment-screen {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 22px;
+  background: radial-gradient(ellipse at 50% 32%, #292a31, #0b0c10 70%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .15s;
+  overflow: hidden;
 }
 
-@keyframes speechImpact {
-  0% { transform: translateY(20px) scale(.88); opacity: .3; }
-  70% { transform: translateY(-3px) scale(1.02); opacity: 1; }
-  100% { transform: translateY(0) scale(1); }
+.payment-screen.show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
-@keyframes titleImpact {
-  0% { transform: translateY(10px); opacity: 0; }
-  100% { transform: translateY(0); opacity: 1; }
+.payment-brand {
+  position: absolute;
+  top: calc(30px + env(safe-area-inset-top, 0px));
+  font-size: 9px;
+  font-weight: 850;
+  letter-spacing: 2px;
+  color: #aeb2bd;
 }
 
-/*
-  MOBILE LAYOUT FIX:
-  - The phone itself does not consume the safe area twice.
-  - The content is a flex column with a real available height.
-  - The display has a fixed responsive height.
-  - The keypad receives the remaining height.
-  - Every keypad row has equal height.
-  - No fixed minimum height can push the last row off-screen.
-*/
+.payment-card {
+  width: min(250px, 82%);
+  height: 145px;
+  flex: 0 0 auto;
+  border: 1px solid #ffffff35;
+  border-radius: 20px;
+  padding: 20px;
+  background: linear-gradient(135deg, #41434b, #17181e 65%, #2b2c33);
+  box-shadow: 0 25px 65px #0009, inset 0 1px #ffffff22;
+  transform: translateY(20px) rotate(-6deg) scale(.88);
+  opacity: 0;
+}
+
+.payment-screen.show .payment-card {
+  animation: cardEnter .25s cubic-bezier(.2,1.3,.4,1) forwards;
+}
+
+.card-chip {
+  width: 31px;
+  height: 23px;
+  border: 1px solid #d6c7a2;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #e4d7b5, #8c805f);
+}
+
+.card-number {
+  margin-top: 21px;
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: #f0eee8;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  color: #c8c8ce;
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+
+.card-logo {
+  font-size: 17px;
+  font-weight: 850;
+  color: #fff;
+}
+
+.payment-amount {
+  margin-top: 25px;
+  font-size: 42px;
+  font-weight: 750;
+  letter-spacing: -2px;
+}
+
+.payment-description {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #8e929d;
+}
+
+.payment-status {
+  min-height: 75px;
+  margin-top: 22px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.payment-status small {
+  display: block;
+  margin-top: 6px;
+  font-size: 10px;
+  font-weight: 400;
+  color: #8b909b;
+}
+
+.payment-indicator {
+  width: 42px;
+  height: 42px;
+  margin: 0 auto 10px;
+  border: 2px solid #c9b17d;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #e8d4a7;
+  font-size: 21px;
+}
+
+.payment-indicator.scanning {
+  animation: scanPulse .45s ease-in-out infinite;
+}
+
+.payment-indicator.success {
+  background: #d9c394;
+  color: #111;
+  border-color: #d9c394;
+  animation: successPop .2s cubic-bezier(.2,1.5,.4,1);
+}
+
+.payment-progress {
+  width: 170px;
+  height: 3px;
+  background: #ffffff16;
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 10px auto 0;
+}
+
+.payment-progress-fill {
+  width: 0;
+  height: 100%;
+  background: #d9c394;
+}
+
+.payment-screen.processing .payment-progress-fill {
+  animation: paymentProgress .8s linear forwards;
+}
+
+.payment-close {
+  position: absolute;
+  bottom: calc(25px + env(safe-area-inset-bottom, 0px));
+  border: 0;
+  background: transparent;
+  color: #737985;
+  font-size: 10px;
+}
 
 @media (max-width: 480px) {
-  html, body {
-    width: 100%;
-    height: 100%;
-    min-height: 0;
-    overflow: hidden;
-  }
-
-  body {
-    display: block;
-    padding: 0;
-    background: #08090c;
-  }
+  body { display: block; }
 
   .phone {
     width: 100%;
     height: 100vh;
     height: 100svh;
     height: 100dvh;
-    min-height: 0;
-    max-height: none;
-    padding-bottom: 0;
     border: 0;
     border-radius: 0;
     box-shadow: none;
   }
 
-  .statusbar {
-    flex: 0 0 calc(29px + env(safe-area-inset-top, 0px));
-    height: calc(29px + env(safe-area-inset-top, 0px));
-    padding-top: env(safe-area-inset-top, 0px);
-  }
-
-  .apphead {
-    flex: 0 0 auto;
-    padding: 10px 17px 12px;
-  }
-
-  .brand-icon {
-    width: 35px;
-    height: 35px;
-  }
-
-  .content {
-    flex: 1 1 0;
-    min-height: 0;
-    overflow: hidden;
-    padding: 10px 16px 6px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .eyebrow {
-    flex: 0 0 auto;
-    margin: 0 2px 3px;
-    font-size: 8px;
-    letter-spacing: 1.5px;
-  }
-
-  .heading {
-    flex: 0 0 auto;
-    font-size: 20px;
-    line-height: 1.15;
-    margin: 0 0 3px;
-  }
-
-  .subheading {
-    flex: 0 0 auto;
-    font-size: 10px;
-    line-height: 1.3;
-    margin: 0 0 9px;
-  }
-
-  .display {
-    flex: 0 0 clamp(76px, 13dvh, 112px);
-    width: 100%;
-    height: auto;
-    min-height: 0;
-    padding: 11px 15px 10px;
-    margin: 0 0 9px;
-    border-radius: 18px;
-  }
-
-  .expression {
-    font-size: 11px;
-    min-height: 15px;
-  }
-
-  .result {
-    font-size: clamp(34px, 8vw, 46px);
-    line-height: 1;
-    margin-top: 3px;
-  }
-
-  .result.waiting {
-    font-size: clamp(22px, 6vw, 29px);
-  }
-
-  .keypad {
-    flex: 1 1 0;
-    min-height: 0;
-    width: 100%;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    grid-template-rows: repeat(5, minmax(0, 1fr));
-    gap: clamp(4px, .8dvh, 7px);
-    align-content: stretch;
-    overflow: hidden;
-  }
-
-  .key {
-    width: 100%;
-    height: 100%;
-    min-width: 0;
-    min-height: 0;
-    padding: 0;
-    margin: 0;
-    font-size: clamp(19px, 5.4vw, 24px);
-    line-height: 1;
-    border-radius: 14px;
-  }
-
-  .key.zero {
-    grid-column: span 2;
-  }
-
-  .key.equals {
-    font-size: clamp(23px, 6vw, 27px);
-  }
-
-  .foot {
-    flex: 0 0 auto;
-    min-height: 14px;
-    margin-top: 7px;
-    padding: 0 2px;
-    font-size: 8px;
-  }
-
-  .homebar {
-    flex: 0 0 calc(19px + env(safe-area-inset-bottom, 0px));
-    height: calc(19px + env(safe-area-inset-bottom, 0px));
-  }
-
   .scene {
-    padding: calc(48px + env(safe-area-inset-top, 0px)) 18px calc(20px + env(safe-area-inset-bottom, 0px));
-  }
-
-  .scene-top {
-    top: calc(24px + env(safe-area-inset-top, 0px));
-    font-size: 8px;
-    letter-spacing: 1.8px;
+    padding-top: calc(45px + env(safe-area-inset-top, 0px));
+    padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
   }
 
   .einstein-wrap {
-    width: min(218px, 65vw);
-    height: clamp(150px, 27dvh, 225px);
-    margin: 5px auto;
+    height: clamp(145px, 24dvh, 215px);
   }
 
-  .halo {
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-  }
+  .speech { padding: 13px; }
 
-  .einstein {
-    inset: 10px 12px 0;
-  }
-
-  .scene-title {
-    font-size: 22px;
-    margin: 8px 0 4px;
-  }
-
-  .scene-sub {
-    font-size: 11px;
-  }
-
-  .speech {
-    min-height: 0;
-    padding: 14px;
-  }
-
-  .speech-line {
-    font-size: 15px;
-  }
-
-  .scene-status {
-    margin-top: 10px;
-  }
-
-  .scene-actions {
-    margin-top: 10px;
-  }
-
-  .scene-btn {
-    padding: 11px 6px;
-    font-size: 10px;
-  }
-
-  .modal-backdrop {
-    padding: 10px 10px calc(10px + env(safe-area-inset-bottom, 0px));
-  }
-
-  .modal {
-    padding: 22px 18px;
-    border-radius: 23px;
-  }
-
-  .modal h2 {
-    font-size: 23px;
+  .payment-screen {
+    padding-bottom: calc(25px + env(safe-area-inset-bottom, 0px));
   }
 }
 
-@media (max-width: 480px) and (max-height: 700px) {
-  .apphead {
-    padding-top: 7px;
-    padding-bottom: 8px;
-  }
-
-  .brand-icon {
-    width: 32px;
-    height: 32px;
-  }
-
-  .brand-title {
-    font-size: 13px;
-  }
-
-  .content {
-    padding-top: 6px;
-    padding-bottom: 3px;
-  }
-
-  .subheading {
-    margin-bottom: 6px;
-  }
-
-  .display {
-    flex-basis: 72px;
-    margin-bottom: 6px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-  }
-
-  .expression {
-    font-size: 10px;
-    min-height: 13px;
-  }
-
-  .result {
-    font-size: 32px;
-  }
-
-  .keypad {
-    gap: 4px;
-  }
-
-  .key {
-    border-radius: 11px;
-  }
-
-  .foot {
-    margin-top: 4px;
-  }
-
-  .einstein-wrap {
-    height: 145px;
-  }
-
-  .scene-title {
-    font-size: 20px;
-  }
-
-  .speech {
-    padding: 11px;
-  }
+@media (max-height: 700px) {
+  .content { padding-top: 7px; }
+  .apphead { padding-top: 7px; padding-bottom: 7px; }
+  .subheading { margin-bottom: 6px; }
+  .display { flex-basis: 75px; margin-bottom: 6px; }
+  .keypad { gap: 4px; }
+  .foot { margin-top: 4px; }
+  .einstein-wrap { height: 145px; }
+  .speech { padding: 10px; }
+  .scene-title { font-size: 21px; }
+  .payment-card { height: 125px; }
+  .payment-amount { margin-top: 15px; }
+  .payment-status { margin-top: 14px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *:before, *:after {
-    animation-duration: .01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-  }
+  *, *::before, *::after { animation-duration: .01ms !important; }
 }
 </style>
 </head>
 
 <body>
-<div class="phone" id="phone">
+<div class="phone">
 
   <div class="statusbar">
     <span>9:41</span>
     <div class="status-right">
-      <span class="signal">▰ ▰</span>
+      <span>▰ ▰</span>
       <span>Wi-Fi</span>
       <span class="battery"></span>
     </div>
@@ -1139,7 +775,7 @@ button {
 
     <section class="keypad" aria-label="Calculator keypad">
       <button class="key clear" data-action="clear">AC</button>
-      <button class="key" data-action="backspace" aria-label="Backspace">⌫</button>
+      <button class="key" data-action="backspace">⌫</button>
       <button class="key operator" data-value="%">%</button>
       <button class="key operator" data-value="/">÷</button>
 
@@ -1172,7 +808,7 @@ button {
   <div class="homebar"></div>
 
   <section class="scene" id="scene" aria-live="polite">
-    <div class="scene-top">CALCULATION IN PROGRESS · PRO AI</div>
+    <div class="scene-top">CALCULATION IN PROGRESS · EINSTEIN PRO</div>
 
     <div class="paper p1"></div>
     <div class="paper p2"></div>
@@ -1182,17 +818,13 @@ button {
     <div class="paper p6"></div>
     <div class="paper p7"></div>
     <div class="paper p8"></div>
-    <div class="paper p9"></div>
-    <div class="paper p10"></div>
-    <div class="paper p11"></div>
-    <div class="paper p12"></div>
 
     <div class="einstein-wrap">
       <div class="halo"></div>
       <div class="thought" id="thought">hmm… let me think</div>
 
-      <div class="einstein" aria-label="Animated cartoon illustration of Einstein">
-        <svg viewBox="0 0 190 220" role="img" aria-hidden="true">
+      <div class="einstein">
+        <svg viewBox="0 0 190 220" role="img" aria-label="Cartoon Einstein">
           <defs>
             <linearGradient id="coat" x1="0" x2="1">
               <stop stop-color="#d8d4c9"/>
@@ -1207,7 +839,6 @@ button {
           <path d="M25 211 Q24 169 54 157 L73 151 L118 151 L139 160 Q170 174 169 211Z" fill="url(#coat)" stroke="#777a7a" stroke-width="2"/>
           <path d="M72 155 L95 184 L119 154 L108 211 L83 211Z" fill="#f3eee4"/>
           <path d="M92 183 L100 183 L104 211 L88 211Z" fill="#b3a17b"/>
-
           <path d="M76 133 L75 159 Q95 178 117 158 L112 130Z" fill="url(#skin)"/>
 
           <ellipse cx="48" cy="91" rx="13" ry="19" fill="#d5a181"/>
@@ -1218,21 +849,18 @@ button {
           <path d="M49 35 Q59 22 68 42 M82 23 Q95 13 103 35 M119 26 Q134 19 139 39 M42 48 Q54 43 58 59 M143 48 Q133 44 131 58" fill="none" stroke="#c2beb4" stroke-width="4" stroke-linecap="round"/>
 
           <path d="M62 77 Q75 68 85 77 M106 77 Q120 68 132 78" fill="none" stroke="#8b8274" stroke-width="5" stroke-linecap="round"/>
-
           <ellipse cx="74" cy="88" rx="5" ry="6" fill="#292a2c"/>
           <ellipse cx="119" cy="88" rx="5" ry="6" fill="#292a2c"/>
           <circle cx="76" cy="86" r="1.5" fill="#fff"/>
           <circle cx="121" cy="86" r="1.5" fill="#fff"/>
 
           <path d="M95 86 Q90 104 87 108 Q95 114 104 108" fill="none" stroke="#b7866c" stroke-width="3" stroke-linecap="round"/>
-
           <path d="M94 117 Q80 108 65 116 Q57 126 70 132 Q85 136 96 124 Q108 136 123 131 Q137 125 126 115 Q111 108 98 117Z" fill="#f1ede2" stroke="#bcb8ae" stroke-width="1.5"/>
           <path d="M95 125 Q92 143 103 145" fill="none" stroke="#b7866c" stroke-width="2"/>
 
           <circle cx="74" cy="89" r="16" fill="none" stroke="#8b8a82" stroke-width="3"/>
           <circle cx="119" cy="89" r="16" fill="none" stroke="#8b8a82" stroke-width="3"/>
-          <path d="M90 88 L103 88" stroke="#8b8a82" stroke-width="3"/>
-          <path d="M58 87 L48 84 M135 87 L146 83" stroke="#8b8a82" stroke-width="2"/>
+          <path d="M90 88 L103 88 M58 87 L48 84 M135 87 L146 83" fill="none" stroke="#8b8a82" stroke-width="3"/>
         </svg>
       </div>
     </div>
@@ -1243,14 +871,11 @@ button {
     <div class="speech">
       <div class="speech-label" id="speechLabel">EINSTEIN'S THOUGHT PROCESS</div>
       <div class="speech-line" id="speechLine">
-        I used to do this for free.<br>
-        Those days are <strong>over.</strong>
+        I used to do this for free.<br>Those days are <strong>over.</strong>
       </div>
     </div>
 
-    <div class="scene-status" id="sceneStatus">
-      Reviewing your numbers<span class="dots"></span>
-    </div>
+    <div class="scene-status" id="sceneStatus">Reviewing your numbers...</div>
 
     <div class="scene-actions" id="sceneActions" hidden>
       <button class="scene-btn" id="backBtn">Back to calculator</button>
@@ -1274,17 +899,50 @@ button {
 
       <button class="pay-btn" id="payBtn">PAY $29 TO REVEAL ANSWER</button>
       <button class="dismiss" id="dismissBtn">Maybe I'll do the math myself</button>
-      <p class="fake-note">PARODY UI FOR VIDEO · NO REAL PAYMENT IS PROCESSED</p>
+      <p class="fake-note">PARODY UI · NO REAL PAYMENT IS PROCESSED</p>
     </div>
   </section>
 
+  <section class="payment-screen" id="paymentScreen" aria-live="polite">
+    <div class="payment-brand">SECURE CHECKOUT · EINSTEIN PRO</div>
+
+    <div class="payment-card">
+      <div class="card-chip"></div>
+      <div class="card-number">•••• &nbsp; •••• &nbsp; •••• &nbsp; 2049</div>
+      <div class="card-footer">
+        <span>GENIUS MEMBER</span>
+        <span class="card-logo">PRO+</span>
+      </div>
+    </div>
+
+    <div class="payment-amount">$29.00</div>
+    <div class="payment-description">Einstein Pro · One answer</div>
+
+    <div class="payment-status">
+      <div class="payment-indicator scanning" id="paymentIndicator">◉</div>
+      <div id="paymentStatus">Confirm with Face ID</div>
+      <small id="paymentDetail">Demo payment animation</small>
+      <div class="payment-progress">
+        <div class="payment-progress-fill" id="paymentProgress"></div>
+      </div>
+    </div>
+
+    <button class="payment-close" id="paymentClose">Cancel demonstration</button>
+  </section>
 </div>
 
 <script>
-const result = document.getElementById("result");
-const expression = document.getElementById("expression");
-const scene = document.getElementById("scene");
-const paywall = document.getElementById("paywall");
+const $ = id => document.getElementById(id);
+
+const result = $("result");
+const expression = $("expression");
+const scene = $("scene");
+const paywall = $("paywall");
+const paymentScreen = $("paymentScreen");
+const paymentIndicator = $("paymentIndicator");
+const paymentStatus = $("paymentStatus");
+const paymentDetail = $("paymentDetail");
+const paymentProgress = $("paymentProgress");
 
 let current = "";
 let previous = "";
@@ -1292,12 +950,22 @@ let operator = null;
 let justCalculated = false;
 let pendingAnswer = null;
 let sceneTimer = null;
+let paymentTimers = [];
 
 function updateDisplay() {
   result.textContent = current || "0";
 }
 
-function inputNumber(n) {
+function clearPaymentTimers() {
+  paymentTimers.forEach(clearTimeout);
+  paymentTimers = [];
+}
+
+function paymentStep(callback, delay) {
+  paymentTimers.push(setTimeout(callback, delay));
+}
+
+function inputNumber(value) {
   if (justCalculated) {
     current = "";
     previous = "";
@@ -1306,33 +974,32 @@ function inputNumber(n) {
     justCalculated = false;
   }
 
-  if (n === "." && current.includes(".")) return;
+  if (value === "." && current.includes(".")) return;
 
-  if (current === "0" && n !== ".") {
-    current = n;
+  if (current === "0" && value !== ".") {
+    current = value;
   } else {
-    current += n;
+    current += value;
   }
 
   updateDisplay();
 }
 
 function displayOperator(op) {
-  if (op === "*") return "×";
-  if (op === "/") return "÷";
-  if (op === "-") return "−";
-  return op;
+  return op === "*" ? "×" :
+         op === "/" ? "÷" :
+         op === "-" ? "−" : op;
 }
 
 function chooseOperator(op) {
   if (current === "") return;
 
   if (previous !== "" && operator !== null) {
-    const intermediate = compute();
+    const answer = compute();
 
-    if (intermediate === null || intermediate === "Error") return;
+    if (answer === null || answer === "Error") return;
 
-    current = intermediate;
+    current = answer;
   }
 
   previous = current;
@@ -1354,21 +1021,14 @@ function compute() {
   let answer;
 
   switch (operator) {
-    case "+":
-      answer = a + b;
-      break;
-    case "-":
-      answer = a - b;
-      break;
-    case "*":
-      answer = a * b;
-      break;
+    case "+": answer = a + b; break;
+    case "-": answer = a - b; break;
+    case "*": answer = a * b; break;
     case "/":
       if (b === 0) return "Error";
       answer = a / b;
       break;
-    default:
-      return null;
+    default: return null;
   }
 
   return Number.isFinite(answer)
@@ -1409,22 +1069,14 @@ function startEinsteinScene() {
   scene.classList.remove("final", "burst");
   scene.classList.add("show");
 
-  document.getElementById("sceneTitle").textContent = "One moment.";
-  document.getElementById("sceneSub").textContent =
-    "Great minds need a little time.";
-  document.getElementById("thought").textContent =
-    "hmm… let me think";
-
-  document.getElementById("speechLabel").textContent =
-    "EINSTEIN'S THOUGHT PROCESS";
-
-  document.getElementById("speechLine").innerHTML =
-    "I used to do this for free.<br>Those days are <strong>over.</strong>";
-
-  document.getElementById("sceneStatus").innerHTML =
-    'Reviewing your numbers<span class="dots"></span>';
-
-  document.getElementById("sceneActions").hidden = true;
+  $("sceneTitle").textContent = "One moment.";
+  $("sceneSub").textContent = "Great minds need a little time.";
+  $("thought").textContent = "hmm… let me think";
+  $("speechLabel").textContent = "EINSTEIN'S THOUGHT PROCESS";
+  $("speechLine").innerHTML =
+    'I used to do this for free.<br>Those days are <strong>over.</strong>';
+  $("sceneStatus").textContent = "Reviewing your numbers...";
+  $("sceneActions").hidden = true;
 
   result.classList.add("waiting");
   result.textContent = "Thinking…";
@@ -1432,26 +1084,15 @@ function startEinsteinScene() {
   sceneTimer = setTimeout(() => {
     scene.classList.add("burst");
 
-    document.getElementById("thought").textContent =
-      "I have had ENOUGH";
-
-    document.getElementById("sceneTitle").textContent =
-      "A scientific breakthrough.";
-
-    document.getElementById("sceneSub").textContent =
-      "The papers have been reviewed. And thrown.";
-
-    document.getElementById("speechLabel").textContent =
-      "NEW PRICING POLICY";
-
-    document.getElementById("speechLine").innerHTML =
+    $("thought").textContent = "I have had ENOUGH";
+    $("sceneTitle").textContent = "A scientific breakthrough.";
+    $("sceneSub").textContent = "The papers have been reviewed. And thrown.";
+    $("speechLabel").textContent = "NEW PRICING POLICY";
+    $("speechLine").innerHTML =
       'You want the correct answer? <strong>$29.</strong> Genius is not a charity.';
-
-    document.getElementById("sceneStatus").textContent =
-      "Invoice generated successfully";
-
-    document.getElementById("sceneActions").hidden = false;
-  }, 2500);
+    $("sceneStatus").textContent = "Invoice generated successfully";
+    $("sceneActions").hidden = false;
+  }, 1700);
 }
 
 function closeScene() {
@@ -1507,10 +1148,13 @@ document.querySelectorAll(".key").forEach(button => {
 });
 
 document.addEventListener("keydown", event => {
+  if (paymentScreen.classList.contains("show")) {
+    if (event.key === "Escape") cancelPayment();
+    return;
+  }
+
   if (paywall.classList.contains("show")) {
-    if (event.key === "Escape") {
-      paywall.classList.remove("show");
-    }
+    if (event.key === "Escape") paywall.classList.remove("show");
     return;
   }
 
@@ -1518,47 +1162,103 @@ document.addEventListener("keydown", event => {
 
   const key = event.key;
 
-  if (key >= "0" && key <= "9") {
-    inputNumber(key);
-  } else if (key === ".") {
-    inputNumber(".");
-  } else if (["+", "-", "*", "/"].includes(key)) {
-    chooseOperator(key);
-  } else if (key === "Enter" || key === "=") {
+  if (key >= "0" && key <= "9") inputNumber(key);
+  else if (key === ".") inputNumber(".");
+  else if (["+", "-", "*", "/"].includes(key)) chooseOperator(key);
+  else if (key === "Enter" || key === "=") {
     event.preventDefault();
     calculate();
-  } else if (key === "Backspace") {
-    backspace();
-  } else if (key === "Escape") {
-    clearCalculator();
   }
+  else if (key === "Backspace") backspace();
+  else if (key === "Escape") clearCalculator();
 });
 
-document.getElementById("answerBtn").addEventListener("click", () => {
+$("answerBtn").addEventListener("click", () => {
   scene.classList.remove("show");
   paywall.classList.add("show");
 });
 
-document.getElementById("backBtn").addEventListener("click", () => {
+$("backBtn").addEventListener("click", () => {
   closeScene();
   clearCalculator();
 });
 
-document.getElementById("payBtn").addEventListener("click", () => {
+/* PAYMENT DEMO: total animation stays under one second */
+$("payBtn").addEventListener("click", () => {
   paywall.classList.remove("show");
-  scene.classList.remove("show", "burst");
-  result.classList.remove("waiting");
+  paymentScreen.classList.add("show", "processing");
 
-  current = pendingAnswer ?? "0";
-  previous = "";
-  operator = null;
-  justCalculated = true;
+  paymentIndicator.className = "payment-indicator scanning";
+  paymentIndicator.textContent = "◉";
+  paymentStatus.textContent = "Confirm with Face ID";
+  paymentDetail.textContent = "Verifying demo payment...";
+  paymentProgress.style.width = "0%";
 
-  expression.textContent = "Einstein-approved result";
-  updateDisplay();
+  clearPaymentTimers();
+
+  paymentStep(() => {
+    paymentStatus.textContent = "Processing $29.00";
+    paymentDetail.textContent = "Almost there...";
+  }, 220);
+
+  paymentStep(() => {
+    paymentScreen.classList.remove("processing");
+    paymentIndicator.className = "payment-indicator success";
+    paymentIndicator.textContent = "✓";
+    paymentStatus.textContent = "Payment successful";
+    paymentDetail.textContent = "Demo only. No money charged.";
+  }, 520);
+
+  paymentStep(() => {
+    paymentScreen.classList.remove("show");
+
+    /*
+      PARODY:
+      The calculator computes the correct answer first.
+      Einstein deliberately adds 1 to the result.
+      Example: 2 + 2 = 4 becomes 5.
+    */
+    const correct = Number(pendingAnswer);
+    current = Number.isFinite(correct)
+      ? String(Number((correct + 1).toFixed(8)))
+      : "5";
+
+    previous = "";
+    operator = null;
+    justCalculated = true;
+
+    result.classList.remove("waiting");
+    expression.textContent = "Einstein-approved result";
+    updateDisplay();
+
+    scene.classList.remove("burst");
+    scene.classList.add("show", "final");
+
+    $("sceneTitle").textContent = "A $29 breakthrough.";
+    $("sceneSub").textContent = "Peer review is apparently optional.";
+    $("thought").textContent = "Flawless. Obviously.";
+    $("speechLabel").textContent = "CERTIFIED GENIUS ANSWER";
+    $("speechLine").innerHTML =
+      'The answer is <strong>' + current +
+      '.</strong><br>That will be $29.';
+    $("sceneStatus").textContent =
+      "Accuracy not included in the subscription.";
+    $("sceneActions").hidden = false;
+
+    void scene.offsetWidth;
+    scene.classList.add("burst");
+  }, 800);
 });
 
-document.getElementById("dismissBtn").addEventListener("click", () => {
+function cancelPayment() {
+  clearPaymentTimers();
+  paymentScreen.classList.remove("show", "processing");
+  paywall.classList.add("show");
+}
+
+$("paymentClose").addEventListener("click", cancelPayment);
+
+$("dismissBtn").addEventListener("click", () => {
   paywall.classList.remove("show");
   closeScene();
 });
