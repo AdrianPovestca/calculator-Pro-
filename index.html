@@ -1,1899 +1,1569 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Calculator Pro+</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#08090c">
+<title>Calculator Pro+ — Einstein Edition</title>
 
 <style>
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
-
-    :root {
-        --bg: #08090b;
-        --panel: #0f1115;
-        --panel-2: #14171c;
-        --panel-3: #191c22;
-        --border: #252a32;
-        --border-light: #303640;
-
-        --text: #f5f7fa;
-        --muted: #8c949f;
-        --muted-2: #606873;
-
-        --accent: #ffffff;
-        --green: #72d69a;
-        --red: #ff6f6f;
-        --blue: #78a8ff;
-
-        --shadow: 0 30px 80px rgba(0,0,0,.45);
-    }
-
-    body {
-        width: 100%;
-        height: 100vh;
-        overflow: hidden;
-
-        background:
-            radial-gradient(
-                circle at 50% 10%,
-                rgba(255,255,255,.045),
-                transparent 35%
-            ),
-            var(--bg);
-
-        color: var(--text);
-        font-family:
-            Inter,
-            -apple-system,
-            BlinkMacSystemFont,
-            "Segoe UI",
-            sans-serif;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    /* =========================
-       APP WINDOW
-    ========================= */
-
-    .app-window {
-        width: min(1180px, 94vw);
-        height: min(760px, 90vh);
-
-        background: var(--panel);
-
-        border: 1px solid var(--border-light);
-        border-radius: 18px;
-
-        box-shadow: var(--shadow);
-
-        display: flex;
-        overflow: hidden;
-
-        position: relative;
-    }
-
-    /* =========================
-       SIDEBAR
-    ========================= */
-
-    .sidebar {
-        width: 220px;
-        flex-shrink: 0;
-
-        background: #0c0e11;
-
-        border-right: 1px solid var(--border);
-
-        display: flex;
-        flex-direction: column;
-
-        padding: 22px 14px;
-    }
-
-    .brand {
-        display: flex;
-        align-items: center;
-        gap: 11px;
-
-        padding: 4px 10px 26px;
-    }
-
-    .brand-icon {
-        width: 32px;
-        height: 32px;
-
-        border-radius: 9px;
-
-        background: #f5f5f5;
-        color: #090a0c;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        font-size: 16px;
-        font-weight: 800;
-    }
-
-    .brand-text {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-    }
-
-    .brand-name {
-        font-size: 14px;
-        font-weight: 700;
-        letter-spacing: -.2px;
-    }
-
-    .brand-version {
-        font-size: 10px;
-        color: var(--muted-2);
-        letter-spacing: .5px;
-    }
-
-    .nav {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    .nav-label {
-        color: #4f5660;
-        font-size: 9px;
-        font-weight: 700;
-        letter-spacing: 1.4px;
-
-        padding: 0 11px;
-        margin: 4px 0 7px;
-    }
-
-    .nav-item {
-        height: 40px;
-
-        border-radius: 9px;
-
-        display: flex;
-        align-items: center;
-        gap: 11px;
-
-        padding: 0 11px;
-
-        color: #858d98;
-
-        font-size: 12px;
-        font-weight: 500;
-
-        transition: .2s ease;
-    }
-
-    .nav-item:hover {
-        background: rgba(255,255,255,.035);
-        color: #dce0e5;
-    }
-
-    .nav-item.active {
-        background: #191c21;
-        color: #ffffff;
-    }
-
-    .nav-icon {
-        width: 18px;
-        text-align: center;
-        font-size: 14px;
-        opacity: .85;
-    }
-
-    .sidebar-bottom {
-        margin-top: auto;
-
-        border-top: 1px solid var(--border);
-
-        padding: 18px 10px 3px;
-    }
-
-    .local-status {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-
-        font-size: 10px;
-        color: #626a75;
-    }
-
-    .status-dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: var(--green);
-        box-shadow: 0 0 10px rgba(114,214,154,.4);
-    }
-
-    /* =========================
-       MAIN
-    ========================= */
-
-    .main {
-        flex: 1;
-        min-width: 0;
-
-        display: flex;
-        flex-direction: column;
-    }
-
-    .topbar {
-        height: 68px;
-        flex-shrink: 0;
-
-        border-bottom: 1px solid var(--border);
-
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        padding: 0 24px;
-    }
-
-    .page-title {
-        display: flex;
-        flex-direction: column;
-        gap: 3px;
-    }
-
-    .page-title h1 {
-        font-size: 14px;
-        font-weight: 650;
-        letter-spacing: -.2px;
-    }
-
-    .page-title span {
-        font-size: 10px;
-        color: var(--muted-2);
-    }
-
-    .top-actions {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .save-status {
-        font-size: 10px;
-        color: #59616c;
-        margin-right: 8px;
-    }
-
-    .exit-btn {
-        height: 34px;
-        padding: 0 14px;
-
-        background: transparent;
-
-        border: 1px solid #30353d;
-        border-radius: 8px;
-
-        color: #9ca3ad;
-
-        font-size: 11px;
-        font-weight: 600;
-
-        cursor: pointer;
-
-        transition: .2s ease;
-    }
-
-    .exit-btn:hover {
-        border-color: #666d78;
-        color: #fff;
-        background: rgba(255,255,255,.035);
-    }
-
-    /* =========================
-       CONTENT
-    ========================= */
-
-    .content {
-        flex: 1;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        padding: 35px;
-    }
-
-    .calculator-area {
-        width: min(540px, 100%);
-    }
-
-    .calculator-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        margin-bottom: 13px;
-    }
-
-    .calculator-heading {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-    }
-
-    .calculator-heading h2 {
-        font-size: 12px;
-        font-weight: 650;
-    }
-
-    .calculator-heading span {
-        color: #5f6670;
-        font-size: 10px;
-    }
-
-    .pro-badge {
-        font-size: 9px;
-        font-weight: 700;
-        letter-spacing: .8px;
-
-        color: #0a0b0d;
-        background: #f1f3f5;
-
-        border-radius: 5px;
-
-        padding: 5px 7px;
-    }
-
-    /* =========================
-       DISPLAY
-    ========================= */
-
-    .display {
-        height: 150px;
-
-        background:
-            linear-gradient(
-                145deg,
-                rgba(255,255,255,.025),
-                rgba(255,255,255,.005)
-            ),
-            #0a0c0f;
-
-        border: 1px solid var(--border-light);
-        border-radius: 13px;
-
-        padding: 20px 22px;
-
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-
-        margin-bottom: 12px;
-
-        overflow: hidden;
-    }
-
-    .expression {
-        height: 22px;
-
-        text-align: right;
-
-        color: #606874;
-
-        font-family:
-            "SFMono-Regular",
-            Consolas,
-            monospace;
-
-        font-size: 13px;
-
-        margin-bottom: 5px;
-    }
-
-    .result {
-        text-align: right;
-
-        font-size: 42px;
-        line-height: 1;
-
-        font-weight: 400;
-        letter-spacing: -2px;
-
-        color: #f8fafc;
-
-        transition: .15s ease;
-    }
-
-    .result.flash {
-        transform: scale(1.025);
-        color: #ffffff;
-    }
-
-    /* =========================
-       KEYPAD
-    ========================= */
-
-    .keypad {
-        display: grid;
-
-        grid-template-columns: repeat(4, 1fr);
-
-        gap: 8px;
-    }
-
-    .key {
-        height: 62px;
-
-        border-radius: 9px;
-
-        border: 1px solid var(--border);
-
-        background: #12151a;
-
-        color: #dce0e5;
-
-        font-family:
-            "SFMono-Regular",
-            Consolas,
-            monospace;
-
-        font-size: 15px;
-
-        cursor: pointer;
-
-        transition:
-            background .12s ease,
-            border-color .12s ease,
-            transform .08s ease;
-    }
-
-    .key:hover {
-        background: #191d23;
-        border-color: #343a43;
-    }
-
-    .key:active {
-        transform: scale(.97);
-        background: #20242b;
-    }
-
-    .key.operator {
-        background: #171a20;
-        color: #ffffff;
-    }
-
-    .key.equals {
-        background: #f2f4f6;
-        color: #08090b;
-        border-color: #f2f4f6;
-
-        font-weight: 700;
-    }
-
-    .key.equals:hover {
-        background: #ffffff;
-    }
-
-    .key.clear {
-        color: #ff8585;
-    }
-
-    .key.zero {
-        grid-column: span 2;
-    }
-
-    /* =========================
-       FOOTER
-    ========================= */
-
-    .calculator-footer {
-        margin-top: 14px;
-
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        color: #4f5660;
-
-        font-size: 9px;
-    }
-
-    .shortcut {
-        font-family: monospace;
-    }
-
-    /* =========================
-       POV CAPTION
-    ========================= */
-
-    .pov-caption {
-        position: fixed;
-
-        top: 24px;
-        left: 50%;
-
-        transform: translateX(-50%);
-
-        padding: 9px 15px;
-
-        border: 1px solid rgba(255,255,255,.09);
-        border-radius: 8px;
-
-        background: rgba(9,10,12,.78);
-
-        backdrop-filter: blur(12px);
-
-        color: #e6e8eb;
-
-        font-size: 12px;
-        font-weight: 600;
-
-        letter-spacing: -.1px;
-
-        z-index: 20;
-
-        box-shadow: 0 10px 35px rgba(0,0,0,.3);
-    }
-
-    /* =========================
-       PAYWALL OVERLAY
-    ========================= */
-
-    .overlay {
-        position: fixed;
-        inset: 0;
-
-        background: rgba(0,0,0,.67);
-
-        backdrop-filter: blur(10px);
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        opacity: 0;
-        pointer-events: none;
-
-        transition: opacity .25s ease;
-
-        z-index: 100;
-    }
-
-    .overlay.show {
-        opacity: 1;
-        pointer-events: auto;
-    }
-
-    .paywall {
-        width: min(420px, 90vw);
-
-        background:
-            linear-gradient(
-                145deg,
-                #171a1f,
-                #0f1115
-            );
-
-        border: 1px solid #343942;
-
-        border-radius: 18px;
-
-        box-shadow:
-            0 35px 100px rgba(0,0,0,.7),
-            0 0 0 1px rgba(255,255,255,.02);
-
-        padding: 30px;
-
-        transform: translateY(12px) scale(.98);
-
-        transition: .3s cubic-bezier(.2,.8,.2,1);
-    }
-
-    .overlay.show .paywall {
-        transform: translateY(0) scale(1);
-    }
-
-    .paywall-icon {
-        width: 44px;
-        height: 44px;
-
-        border-radius: 12px;
-
-        background: #f2f4f6;
-        color: #0b0c0e;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        font-size: 18px;
-        font-weight: 800;
-
-        margin-bottom: 20px;
-    }
-
-    .paywall-label {
-        color: #777f8a;
-
-        font-size: 9px;
-        font-weight: 700;
-
-        letter-spacing: 1.4px;
-
-        margin-bottom: 8px;
-    }
-
-    .paywall h3 {
-        font-size: 22px;
-        font-weight: 650;
-
-        letter-spacing: -.5px;
-
-        margin-bottom: 9px;
-    }
-
-    .paywall-description {
-        color: #858d97;
-
-        font-size: 12px;
-        line-height: 1.6;
-
-        margin-bottom: 24px;
-    }
-
-    .price-box {
-        border: 1px solid #2b3038;
-        background: #101216;
-
-        border-radius: 11px;
-
-        padding: 16px 17px;
-
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        margin-bottom: 12px;
-    }
-
-    .price-left {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-    }
-
-    .price-title {
-        font-size: 11px;
-        font-weight: 600;
-    }
-
-    .price-subtitle {
-        font-size: 9px;
-        color: #606873;
-    }
-
-    .price {
-        font-size: 21px;
-        font-weight: 700;
-        letter-spacing: -.5px;
-    }
-
-    .unlock-btn {
-        width: 100%;
-        height: 46px;
-
-        border: 0;
-        border-radius: 9px;
-
-        background: #f2f4f6;
-        color: #08090b;
-
-        font-size: 11px;
-        font-weight: 750;
-        letter-spacing: .1px;
-
-        cursor: pointer;
-
-        transition: .15s ease;
-    }
-
-    .unlock-btn:hover {
-        background: white;
-        transform: translateY(-1px);
-    }
-
-    .later-btn {
-        width: 100%;
-        height: 42px;
-
-        margin-top: 8px;
-
-        border: 0;
-        background: transparent;
-
-        color: #626a75;
-
-        font-size: 10px;
-
-        cursor: pointer;
-    }
-
-    .later-btn:hover {
-        color: #a0a7b0;
-    }
-
-    /* =========================
-       EXIT PAYWALL
-    ========================= */
-
-    .exit-paywall {
-        width: min(420px, 90vw);
-
-        background: #101216;
-
-        border: 1px solid #363b44;
-
-        border-radius: 18px;
-
-        padding: 31px;
-
-        box-shadow: 0 35px 100px rgba(0,0,0,.75);
-
-        transform: translateY(12px) scale(.98);
-
-        transition: .3s ease;
-    }
-
-    .overlay.show .exit-paywall {
-        transform: translateY(0) scale(1);
-    }
-
-    .warning-icon {
-        width: 44px;
-        height: 44px;
-
-        border-radius: 12px;
-
-        background: rgba(255,111,111,.09);
-        border: 1px solid rgba(255,111,111,.18);
-
-        color: #ff7b7b;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        font-size: 18px;
-
-        margin-bottom: 20px;
-    }
-
-    .exit-paywall h3 {
-        font-size: 22px;
-        font-weight: 650;
-
-        letter-spacing: -.5px;
-
-        margin-bottom: 9px;
-    }
-
-    .exit-description {
-        color: #858d97;
-
-        font-size: 12px;
-        line-height: 1.6;
-
-        margin-bottom: 22px;
-    }
-
-    .exit-price {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        background: #15181d;
-
-        border: 1px solid #292e36;
-
-        padding: 16px;
-
-        border-radius: 10px;
-
-        margin-bottom: 10px;
-    }
-
-    .exit-price span:first-child {
-        color: #777f89;
-        font-size: 10px;
-    }
-
-    .exit-price strong {
-        font-size: 21px;
-    }
-
-    .pay-exit {
-        width: 100%;
-        height: 46px;
-
-        border: 0;
-        border-radius: 9px;
-
-        background: #f2f4f6;
-        color: #090a0c;
-
-        font-size: 11px;
-        font-weight: 750;
-
-        cursor: pointer;
-    }
-
-    .fake-success {
-        display: none;
-        text-align: center;
-    }
-
-    .fake-success.show {
-        display: block;
-    }
-
-    .fake-success-icon {
-        width: 54px;
-        height: 54px;
-
-        margin: 0 auto 18px;
-
-        border-radius: 50%;
-
-        background: rgba(114,214,154,.1);
-        border: 1px solid rgba(114,214,154,.25);
-
-        color: var(--green);
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        font-size: 22px;
-    }
-
-    .fake-success h3 {
-        margin-bottom: 8px;
-    }
-
-    .fake-success p {
-        color: #777f89;
-        font-size: 11px;
-        line-height: 1.6;
-        margin-bottom: 20px;
-    }
-
-    .success-close {
-        width: 100%;
-        height: 44px;
-
-        border: 1px solid #30353d;
-        border-radius: 9px;
-
-        background: transparent;
-        color: #dce0e5;
-
-        cursor: pointer;
-    }
-
-    /* =========================
-       RESPONSIVE
-    ========================= */
-
-    @media (max-width: 750px) {
-        .sidebar {
-            display: none;
-        }
-
-        .app-window {
-            width: 95vw;
-            height: 88vh;
-        }
-
-        .content {
-            padding: 20px;
-        }
-
-        .save-status {
-            display: none;
-        }
-
-        .result {
-            font-size: 34px;
-        }
-
-        .key {
-            height: 55px;
-        }
-    }
+:root {
+  color-scheme: dark;
+  --bg: #08090c;
+  --panel: #111318;
+  --line: #292d36;
+  --muted: #858b98;
+  --white: #f5f5f7;
+  --gold: #d8bd86;
+  --red: #ff7777;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #050609;
+  color: var(--white);
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: radial-gradient(ellipse at 50% 0%, #1b1c22, #08090c 48%, #050609);
+}
+
+button {
+  font: inherit;
+}
+
+.phone {
+  position: relative;
+  width: min(100%, 410px);
+  height: min(850px, calc(100dvh - 36px));
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid #353943;
+  border-radius: 34px;
+  background: linear-gradient(160deg, #121419, #090a0e 70%);
+  box-shadow: 0 30px 100px #000a, inset 0 0 0 5px #0005;
+  display: flex;
+  flex-direction: column;
+}
+
+.statusbar {
+  flex: 0 0 31px;
+  height: 31px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  color: #d8d9dd;
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.status-right {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.signal {
+  font-size: 10px;
+  letter-spacing: -2px;
+}
+
+.battery {
+  width: 17px;
+  height: 9px;
+  border: 1px solid #b7bbc3;
+  border-radius: 3px;
+  position: relative;
+}
+
+.battery:before {
+  content: "";
+  position: absolute;
+  inset: 1px 3px 1px 1px;
+  background: #dfe1e6;
+}
+
+.battery:after {
+  content: "";
+  position: absolute;
+  right: -3px;
+  top: 2px;
+  width: 2px;
+  height: 3px;
+  background: #b7bbc3;
+}
+
+.apphead {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 21px 18px;
+  border-bottom: 1px solid #ffffff0b;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+}
+
+.brand-icon {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: #f4f4f5;
+  color: #101116;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.brand-title {
+  font-size: 15px;
+  font-weight: 750;
+  letter-spacing: -.4px;
+}
+
+.brand-sub {
+  font-size: 10px;
+  color: #7e8490;
+  margin-top: 3px;
+  letter-spacing: .4px;
+}
+
+.pro-pill {
+  flex-shrink: 0;
+  border: 1px solid #bca77a66;
+  color: #e0c997;
+  background: #c7a96c0d;
+  border-radius: 20px;
+  padding: 7px 10px;
+  font-size: 9px;
+  letter-spacing: 1px;
+  font-weight: 800;
+}
+
+.content {
+  flex: 1 1 0;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 20px 12px;
+  overflow: hidden;
+}
+
+.eyebrow {
+  flex: 0 0 auto;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.9px;
+  color: #8a8e99;
+  font-weight: 750;
+  margin: 1px 2px 7px;
+}
+
+.heading {
+  flex: 0 0 auto;
+  font-size: 24px;
+  line-height: 1.15;
+  letter-spacing: -1px;
+  font-weight: 650;
+  margin: 0 0 5px;
+}
+
+.subheading {
+  flex: 0 0 auto;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #747b87;
+  margin: 0 0 19px;
+}
+
+.display {
+  flex: 0 0 136px;
+  min-height: 0;
+  border: 1px solid #343843;
+  border-radius: 22px;
+  background:
+    radial-gradient(ellipse at 80% 0%, #20222a66, transparent 55%),
+    linear-gradient(145deg, #14161b, #0c0d11);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  box-shadow: inset 0 1px #ffffff08;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.expression {
+  width: 100%;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  color: #818795;
+  min-height: 20px;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.result {
+  max-width: 100%;
+  font-size: 52px;
+  line-height: 1.05;
+  letter-spacing: -2.5px;
+  font-weight: 450;
+  margin-top: 7px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.result.waiting {
+  font-size: 30px;
+  letter-spacing: -.8px;
+  color: #c9b58e;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+/* THE IMPORTANT PART: the keypad gets the remaining height */
+.keypad {
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(5, minmax(0, 1fr));
+  gap: 9px;
+  align-content: stretch;
+  overflow: hidden;
+}
+
+.key {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #2a2e37;
+  border-radius: 17px;
+  background: linear-gradient(145deg, #191c22, #121419);
+  color: #f0f1f4;
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 520;
+  box-shadow: inset 0 1px #ffffff08;
+  cursor: pointer;
+  transition: transform .12s, background .12s, border-color .12s;
+}
+
+.key:active {
+  transform: scale(.96);
+  background: #272a32;
+}
+
+.key.operator {
+  color: #e0c998;
+  background: linear-gradient(145deg, #25231f, #17171a);
+  border-color: #544b3b;
+}
+
+.key.clear {
+  color: #ff8585;
+}
+
+.key.zero {
+  grid-column: span 2;
+}
+
+.key.equals {
+  background: linear-gradient(145deg, #f1e6cf, #cdb888);
+  color: #15130f;
+  border-color: #e7d5ae;
+  font-size: 24px;
+  font-weight: 750;
+  box-shadow: 0 5px 20px #b99c5d1c;
+}
+
+.foot {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: #555c68;
+  font-size: 9px;
+  margin-top: 12px;
+  padding: 0 2px;
+  line-height: 1.3;
+}
+
+.homebar {
+  flex: 0 0 23px;
+  height: 23px;
+  display: grid;
+  place-items: center;
+}
+
+.homebar:after {
+  content: "";
+  width: 105px;
+  height: 4px;
+  border-radius: 5px;
+  background: #f5f5f7cc;
+}
+
+/* EINSTEIN SCENE */
+
+.scene {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 22px 24px;
+  background: radial-gradient(ellipse at 50% 45%, #25231f, #111216 48%, #07080b);
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity .35s ease;
+  overflow: hidden;
+}
+
+.scene.show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.scene-top {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 2.2px;
+  color: #b5a27d;
+}
+
+.scene-title {
+  font-size: 25px;
+  font-weight: 650;
+  letter-spacing: -1px;
+  text-align: center;
+  margin: 12px 0 5px;
+}
+
+.scene-sub {
+  font-size: 12px;
+  color: #898c96;
+  text-align: center;
+  max-width: 270px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.einstein-wrap {
+  position: relative;
+  width: 218px;
+  height: 225px;
+  margin: 10px auto 5px;
+  flex: 0 1 auto;
+}
+
+.halo {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #c9b17d30, transparent 68%);
+  left: 9px;
+  top: 20px;
+}
+
+.einstein {
+  position: absolute;
+  inset: 17px 18px 0;
+  filter: drop-shadow(0 15px 22px #0008);
+  animation: think 2.3s ease-in-out infinite;
+}
+
+.einstein svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.thought {
+  position: absolute;
+  top: 0;
+  right: -4px;
+  background: #f3eee4;
+  color: #17171a;
+  border-radius: 18px 18px 5px 18px;
+  padding: 11px 14px;
+  font-size: 10px;
+  font-weight: 750;
+  box-shadow: 0 8px 25px #0005;
+  transform: rotate(3deg);
+  animation: float 2s ease-in-out infinite;
+  z-index: 3;
+}
+
+.speech {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 310px;
+  min-height: 100px;
+  border: 1px solid #b9a47755;
+  background: linear-gradient(140deg, #1b1a18, #121317);
+  border-radius: 19px;
+  padding: 18px;
+  text-align: center;
+  box-shadow: 0 15px 40px #0004;
+  position: relative;
+  z-index: 2;
+}
+
+.speech-label {
+  font-size: 9px;
+  letter-spacing: 1.8px;
+  color: #c8b384;
+  font-weight: 800;
+  margin-bottom: 9px;
+}
+
+.speech-line {
+  font-size: 16px;
+  line-height: 1.45;
+  letter-spacing: -.3px;
+  font-weight: 600;
+}
+
+.speech-line strong {
+  color: #e1c58b;
+}
+
+.scene-status {
+  font-size: 10px;
+  color: #9295a0;
+  margin-top: 15px;
+  letter-spacing: .3px;
+  text-align: center;
+}
+
+.paper {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  width: 48px;
+  height: 62px;
+  background: #e7dfce;
+  color: #5d5b57;
+  border-radius: 2px;
+  box-shadow: 0 10px 24px #0009, 0 0 0 1px #fff4;
+  opacity: 0;
+  z-index: 1;
+  font: 10px ui-monospace, monospace;
+  padding: 7px 4px;
+  line-height: 1.7;
+}
+
+.paper:before {
+  content: "∑ x²";
+}
+
+.paper:after {
+  content: "━━━━\A ━━━\A ∫ f(x) dx";
+  white-space: pre;
+  display: block;
+  margin-top: 3px;
+  font-size: 6px;
+  line-height: 1.8;
+  color: #77716a;
+}
+
+.scene.burst .paper {
+  animation: paperFly 1.1s cubic-bezier(.12,.68,.25,1) forwards;
+}
+
+.paper.p1 { --x:-175px; --y:-215px; --r:-70deg; }
+.paper.p2 { --x:155px; --y:-195px; --r:100deg; animation-delay:.06s; }
+.paper.p3 { --x:-165px; --y:105px; --r:-130deg; animation-delay:.1s; }
+.paper.p4 { --x:178px; --y:90px; --r:145deg; animation-delay:.04s; }
+.paper.p5 { --x:-45px; --y:-260px; --r:45deg; animation-delay:.12s; }
+.paper.p6 { --x:110px; --y:190px; --r:95deg; animation-delay:.08s; }
+.paper.p7 { --x:-205px; --y:-70px; --r:-155deg; animation-delay:.08s; }
+.paper.p8 { --x:205px; --y:-65px; --r:165deg; animation-delay:.12s; }
+.paper.p9 { --x:-90px; --y:220px; --r:-75deg; animation-delay:.16s; }
+.paper.p10 { --x:35px; --y:-235px; --r:130deg; animation-delay:.2s; }
+.paper.p11 { --x:195px; --y:165px; --r:205deg; animation-delay:.1s; }
+.paper.p12 { --x:-195px; --y:170px; --r:-190deg; animation-delay:.18s; }
+
+.scene-actions {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  max-width: 310px;
+  margin-top: 15px;
+}
+
+.scene-btn {
+  flex: 1;
+  border: 1px solid #383a40;
+  border-radius: 12px;
+  background: #202127;
+  color: #e7e7eb;
+  padding: 12px 8px;
+  font-size: 11px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.scene-btn.primary {
+  background: #eee5d3;
+  color: #151412;
+  border-color: #eee5d3;
+}
+
+.scene.final .scene-title {
+  color: #e0c58d;
+}
+
+.dots:after {
+  content: "";
+  animation: dots 1.2s steps(4,end) infinite;
+}
+
+/* FICTIONAL PAYWALL */
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 12px;
+  background: #020306b8;
+  backdrop-filter: blur(13px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .25s;
+}
+
+.modal-backdrop.show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.modal {
+  width: 100%;
+  border: 1px solid #45413a;
+  border-radius: 27px;
+  background: linear-gradient(150deg, #1c1b19, #101115 65%);
+  padding: 25px 22px 24px;
+  box-shadow: 0 20px 70px #000b;
+  transform: translateY(22px);
+  transition: transform .3s;
+}
+
+.modal-backdrop.show .modal {
+  transform: translateY(0);
+}
+
+.modal-kicker {
+  font-size: 9px;
+  color: #c9b17d;
+  letter-spacing: 2px;
+  font-weight: 850;
+  margin-bottom: 12px;
+}
+
+.modal h2 {
+  font-size: 25px;
+  letter-spacing: -.9px;
+  line-height: 1.15;
+  margin: 0 0 10px;
+}
+
+.modal p {
+  font-size: 12px;
+  line-height: 1.6;
+  color: #999ca5;
+  margin: 0 0 20px;
+}
+
+.price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border: 1px solid #36332d;
+  background: #171719;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.price-caption {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.price-note {
+  font-size: 10px;
+  color: #777c85;
+  margin-top: 4px;
+}
+
+.price {
+  flex-shrink: 0;
+  font-size: 29px;
+  letter-spacing: -1px;
+  font-weight: 750;
+  color: #f0d8a2;
+}
+
+.pay-btn {
+  width: 100%;
+  min-height: 51px;
+  border: 0;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #f0e5ce, #cfb783);
+  color: #16140f;
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: .5px;
+  cursor: pointer;
+}
+
+.dismiss {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #777b84;
+  font-size: 11px;
+  padding: 14px 0 2px;
+  cursor: pointer;
+}
+
+.fake-note {
+  font-size: 9px !important;
+  text-align: center;
+  margin: 13px 0 0 !important;
+  color: #676b74 !important;
+}
+
+/* ANIMATIONS */
+
+@keyframes pulse {
+  50% { opacity: .45; }
+}
+
+@keyframes think {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-5px) rotate(1deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(3deg); }
+  50% { transform: translateY(-6px) rotate(1deg); }
+}
+
+@keyframes paperFly {
+  0% {
+    opacity: 0;
+    transform: translate(-50%,-10%) scale(.6) rotate(0);
+  }
+  15% { opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--x)),var(--y)) scale(.85) rotate(var(--r));
+  }
+}
+
+@keyframes dots {
+  0% { content: ""; }
+  25% { content: "."; }
+  50% { content: ".."; }
+  75%, 100% { content: "..."; }
+}
+
+.scene:before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(ellipse at center, #d7b56c44, #a83a2b22 27%, transparent 65%);
+  transform: scale(.55);
+}
+
+.scene.burst:before {
+  animation: impactFlash .95s ease-out both;
+}
+
+.scene.burst {
+  animation: sceneShake .55s linear 1;
+}
+
+.scene.burst .einstein {
+  animation: einsteinFreakout .85s cubic-bezier(.2,.8,.2,1) both;
+  filter: drop-shadow(0 0 22px #d7b56c66) drop-shadow(0 15px 22px #0009);
+}
+
+.scene.burst .halo {
+  animation: haloPulse .8s ease-out both;
+}
+
+.scene.burst .thought {
+  animation: thoughtPop .35s cubic-bezier(.2,1.5,.5,1) both;
+  background: #f0d7a3;
+}
+
+.scene.burst .speech {
+  animation: speechImpact .45s cubic-bezier(.2,1.2,.4,1) both;
+  border-color: #d8bd86aa;
+  box-shadow: 0 0 35px #c5a35a22, 0 15px 40px #0007;
+}
+
+.scene.burst .scene-title {
+  animation: titleImpact .45s ease-out both;
+}
+
+@keyframes sceneShake {
+  0%, 100% { transform: translate(0,0); }
+  15% { transform: translate(-5px,2px); }
+  30% { transform: translate(5px,-3px); }
+  45% { transform: translate(-4px,-1px); }
+  60% { transform: translate(4px,2px); }
+  75% { transform: translate(-2px,0); }
+}
+
+@keyframes impactFlash {
+  0% { opacity: 0; transform: scale(.35); }
+  18% { opacity: 1; transform: scale(1.1); }
+  100% { opacity: .25; transform: scale(1.7); }
+}
+
+@keyframes einsteinFreakout {
+  0% { transform: scale(1) rotate(0); }
+  15% { transform: scale(1.13) rotate(-7deg); }
+  30% { transform: scale(1.08) rotate(7deg); }
+  48% { transform: scale(1.15) rotate(-5deg); }
+  68% { transform: scale(1.04) rotate(3deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+@keyframes haloPulse {
+  0% { transform: scale(.7); opacity: .2; }
+  35% { transform: scale(1.5); opacity: 1; }
+  100% { transform: scale(1.15); opacity: .7; }
+}
+
+@keyframes thoughtPop {
+  0% { transform: scale(.5) rotate(-10deg); opacity: 0; }
+  100% { transform: scale(1.08) rotate(4deg); opacity: 1; }
+}
+
+@keyframes speechImpact {
+  0% { transform: translateY(20px) scale(.88); opacity: .3; }
+  70% { transform: translateY(-3px) scale(1.02); opacity: 1; }
+  100% { transform: translateY(0) scale(1); }
+}
+
+@keyframes titleImpact {
+  0% { transform: translateY(10px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/*
+  MOBILE LAYOUT FIX:
+  - The phone itself does not consume the safe area twice.
+  - The content is a flex column with a real available height.
+  - The display has a fixed responsive height.
+  - The keypad receives the remaining height.
+  - Every keypad row has equal height.
+  - No fixed minimum height can push the last row off-screen.
+*/
+
+@media (max-width: 480px) {
+  html, body {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  body {
+    display: block;
+    padding: 0;
+    background: #08090c;
+  }
+
+  .phone {
+    width: 100%;
+    height: 100vh;
+    height: 100svh;
+    height: 100dvh;
+    min-height: 0;
+    max-height: none;
+    padding-bottom: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .statusbar {
+    flex: 0 0 calc(29px + env(safe-area-inset-top, 0px));
+    height: calc(29px + env(safe-area-inset-top, 0px));
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  .apphead {
+    flex: 0 0 auto;
+    padding: 10px 17px 12px;
+  }
+
+  .brand-icon {
+    width: 35px;
+    height: 35px;
+  }
+
+  .content {
+    flex: 1 1 0;
+    min-height: 0;
+    overflow: hidden;
+    padding: 10px 16px 6px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .eyebrow {
+    flex: 0 0 auto;
+    margin: 0 2px 3px;
+    font-size: 8px;
+    letter-spacing: 1.5px;
+  }
+
+  .heading {
+    flex: 0 0 auto;
+    font-size: 20px;
+    line-height: 1.15;
+    margin: 0 0 3px;
+  }
+
+  .subheading {
+    flex: 0 0 auto;
+    font-size: 10px;
+    line-height: 1.3;
+    margin: 0 0 9px;
+  }
+
+  .display {
+    flex: 0 0 clamp(76px, 13dvh, 112px);
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    padding: 11px 15px 10px;
+    margin: 0 0 9px;
+    border-radius: 18px;
+  }
+
+  .expression {
+    font-size: 11px;
+    min-height: 15px;
+  }
+
+  .result {
+    font-size: clamp(34px, 8vw, 46px);
+    line-height: 1;
+    margin-top: 3px;
+  }
+
+  .result.waiting {
+    font-size: clamp(22px, 6vw, 29px);
+  }
+
+  .keypad {
+    flex: 1 1 0;
+    min-height: 0;
+    width: 100%;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: repeat(5, minmax(0, 1fr));
+    gap: clamp(4px, .8dvh, 7px);
+    align-content: stretch;
+    overflow: hidden;
+  }
+
+  .key {
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+    font-size: clamp(19px, 5.4vw, 24px);
+    line-height: 1;
+    border-radius: 14px;
+  }
+
+  .key.zero {
+    grid-column: span 2;
+  }
+
+  .key.equals {
+    font-size: clamp(23px, 6vw, 27px);
+  }
+
+  .foot {
+    flex: 0 0 auto;
+    min-height: 14px;
+    margin-top: 7px;
+    padding: 0 2px;
+    font-size: 8px;
+  }
+
+  .homebar {
+    flex: 0 0 calc(19px + env(safe-area-inset-bottom, 0px));
+    height: calc(19px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .scene {
+    padding: calc(48px + env(safe-area-inset-top, 0px)) 18px calc(20px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .scene-top {
+    top: calc(24px + env(safe-area-inset-top, 0px));
+    font-size: 8px;
+    letter-spacing: 1.8px;
+  }
+
+  .einstein-wrap {
+    width: min(218px, 65vw);
+    height: clamp(150px, 27dvh, 225px);
+    margin: 5px auto;
+  }
+
+  .halo {
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+  }
+
+  .einstein {
+    inset: 10px 12px 0;
+  }
+
+  .scene-title {
+    font-size: 22px;
+    margin: 8px 0 4px;
+  }
+
+  .scene-sub {
+    font-size: 11px;
+  }
+
+  .speech {
+    min-height: 0;
+    padding: 14px;
+  }
+
+  .speech-line {
+    font-size: 15px;
+  }
+
+  .scene-status {
+    margin-top: 10px;
+  }
+
+  .scene-actions {
+    margin-top: 10px;
+  }
+
+  .scene-btn {
+    padding: 11px 6px;
+    font-size: 10px;
+  }
+
+  .modal-backdrop {
+    padding: 10px 10px calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .modal {
+    padding: 22px 18px;
+    border-radius: 23px;
+  }
+
+  .modal h2 {
+    font-size: 23px;
+  }
+}
+
+@media (max-width: 480px) and (max-height: 700px) {
+  .apphead {
+    padding-top: 7px;
+    padding-bottom: 8px;
+  }
+
+  .brand-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .brand-title {
+    font-size: 13px;
+  }
+
+  .content {
+    padding-top: 6px;
+    padding-bottom: 3px;
+  }
+
+  .subheading {
+    margin-bottom: 6px;
+  }
+
+  .display {
+    flex-basis: 72px;
+    margin-bottom: 6px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .expression {
+    font-size: 10px;
+    min-height: 13px;
+  }
+
+  .result {
+    font-size: 32px;
+  }
+
+  .keypad {
+    gap: 4px;
+  }
+
+  .key {
+    border-radius: 11px;
+  }
+
+  .foot {
+    margin-top: 4px;
+  }
+
+  .einstein-wrap {
+    height: 145px;
+  }
+
+  .scene-title {
+    font-size: 20px;
+  }
+
+  .speech {
+    padding: 11px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *:before, *:after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
 </style>
 </head>
 
 <body>
-
-<!--
-    OPTIONAL VIDEO CAPTION
-    Remove this div if you want to add
-    "POV: what do you think about this app?"
-    directly in CapCut.
--->
-<div class="pov-caption">
-    POV: what do you think about this app?
-</div>
-
-
-<div class="app-window">
-
-    <!-- =========================
-         SIDEBAR
-    ========================== -->
-
-    <aside class="sidebar">
-
-        <div class="brand">
-
-            <div class="brand-icon">
-                +
-            </div>
-
-            <div class="brand-text">
-                <div class="brand-name">
-                    Calculator Pro+
-                </div>
-
-                <div class="brand-version">
-                    v4.8.2
-                </div>
-            </div>
-
-        </div>
-
-
-        <div class="nav">
-
-            <div class="nav-label">
-                WORKSPACE
-            </div>
-
-            <div class="nav-item active">
-                <span class="nav-icon">⌘</span>
-                Calculator
-            </div>
-
-            <div class="nav-item">
-                <span class="nav-icon">◷</span>
-                History
-            </div>
-
-            <div class="nav-item">
-                <span class="nav-icon">⌁</span>
-                Keyboard
-            </div>
-
-
-            <div class="nav-label" style="margin-top:22px;">
-                SYSTEM
-            </div>
-
-            <div class="nav-item">
-                <span class="nav-icon">⚙</span>
-                Settings
-            </div>
-
-            <div class="nav-item">
-                <span class="nav-icon">?</span>
-                About
-            </div>
-
-        </div>
-
-
-        <div class="sidebar-bottom">
-
-            <div class="local-status">
-                <span class="status-dot"></span>
-                Local calculations
-            </div>
-
-        </div>
-
-    </aside>
-
-
-    <!-- =========================
-         MAIN
-    ========================== -->
-
-    <main class="main">
-
-        <header class="topbar">
-
-            <div class="page-title">
-
-                <h1>
-                    Calculator
-                </h1>
-
-                <span>
-                    Precision workspace
-                </span>
-
-            </div>
-
-
-            <div class="top-actions">
-
-                <span class="save-status">
-                    All changes saved
-                </span>
-
-                <button
-                    class="exit-btn"
-                    id="exitButton"
-                >
-                    EXIT
-                </button>
-
-            </div>
-
-        </header>
-
-
-        <section class="content">
-
-            <div class="calculator-area">
-
-                <div class="calculator-header">
-
-                    <div class="calculator-heading">
-
-                        <h2>
-                            Quick calculation
-                        </h2>
-
-                        <span>
-                            Professional arithmetic engine
-                        </span>
-
-                    </div>
-
-                    <div class="pro-badge">
-                        PRO+
-                    </div>
-
-                </div>
-
-
-                <!-- DISPLAY -->
-
-                <div class="display">
-
-                    <div
-                        class="expression"
-                        id="expression"
-                    >
-                        Ready
-                    </div>
-
-                    <div
-                        class="result"
-                        id="result"
-                    >
-                        0
-                    </div>
-
-                </div>
-
-
-                <!-- KEYPAD -->
-
-                <div class="keypad">
-
-                    <button class="key clear" data-action="clear">
-                        AC
-                    </button>
-
-                    <button class="key" data-action="backspace">
-                        ⌫
-                    </button>
-
-                    <button class="key" data-value="%">
-                        %
-                    </button>
-
-                    <button class="key operator" data-value="/">
-                        ÷
-                    </button>
-
-
-                    <button class="key" data-value="7">
-                        7
-                    </button>
-
-                    <button class="key" data-value="8">
-                        8
-                    </button>
-
-                    <button class="key" data-value="9">
-                        9
-                    </button>
-
-                    <button class="key operator" data-value="*">
-                        ×
-                    </button>
-
-
-                    <button class="key" data-value="4">
-                        4
-                    </button>
-
-                    <button class="key" data-value="5">
-                        5
-                    </button>
-
-                    <button class="key" data-value="6">
-                        6
-                    </button>
-
-                    <button class="key operator" data-value="-">
-                        −
-                    </button>
-
-
-                    <button class="key" data-value="1">
-                        1
-                    </button>
-
-                    <button class="key" data-value="2">
-                        2
-                    </button>
-
-                    <button class="key" data-value="3">
-                        3
-                    </button>
-
-                    <button class="key operator" data-value="+">
-                        +
-                    </button>
-
-
-                    <button class="key zero" data-value="0">
-                        0
-                    </button>
-
-                    <button class="key" data-value=".">
-                        .
-                    </button>
-
-                    <button class="key equals" data-action="equals">
-                        =
-                    </button>
-
-                </div>
-
-
-                <div class="calculator-footer">
-
-                    <span>
-                        Calculator Pro+ Engine
-                    </span>
-
-                    <span class="shortcut">
-                        ENTER = calculate
-                    </span>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
-</div>
-
-
-<!-- =========================
-     CALCULATOR PRO+ PAYWALL
-========================== -->
-
-<div
-    class="overlay"
-    id="proOverlay"
->
-
-    <div class="paywall">
-
-        <div class="paywall-icon">
-            +
-        </div>
-
-        <div class="paywall-label">
-            CALCULATOR PRO+
-        </div>
-
-        <h3>
-            Calculation complete.
-        </h3>
-
-        <p class="paywall-description">
-            Your calculation has been processed successfully.
-            Continue using Calculator Pro+ to access unlimited
-            calculations and advanced workspace features.
-        </p>
-
-
-        <div class="price-box">
-
-            <div class="price-left">
-
-                <span class="price-title">
-                    Pro+ Lifetime Access
-                </span>
-
-                <span class="price-subtitle">
-                    One-time fictional unlock
-                </span>
-
-            </div>
-
-            <div class="price">
-                $24.99
-            </div>
-
-        </div>
-
-
-        <button class="unlock-btn" id="unlockButton">
-            UNLOCK PRO+ · $24.99
-        </button>
-
-        <button class="later-btn" id="laterButton">
-            Maybe later
-        </button>
-
+<div class="phone" id="phone">
+
+  <div class="statusbar">
+    <span>9:41</span>
+    <div class="status-right">
+      <span class="signal">▰ ▰</span>
+      <span>Wi-Fi</span>
+      <span class="battery"></span>
+    </div>
+  </div>
+
+  <header class="apphead">
+    <div class="brand">
+      <div class="brand-icon">+</div>
+      <div>
+        <div class="brand-title">Calculator Pro+</div>
+        <div class="brand-sub">THE PRECISION EDITION</div>
+      </div>
+    </div>
+    <div class="pro-pill">PRO ACCESS</div>
+  </header>
+
+  <main class="content">
+    <div class="eyebrow">YOUR PRIVATE WORKSPACE</div>
+    <h1 class="heading">Calculator</h1>
+    <p class="subheading">Precision takes time. And apparently money.</p>
+
+    <div class="display">
+      <div class="expression" id="expression">Ready when you are</div>
+      <div class="result" id="result">0</div>
     </div>
 
-</div>
+    <section class="keypad" aria-label="Calculator keypad">
+      <button class="key clear" data-action="clear">AC</button>
+      <button class="key" data-action="backspace" aria-label="Backspace">⌫</button>
+      <button class="key operator" data-value="%">%</button>
+      <button class="key operator" data-value="/">÷</button>
 
+      <button class="key" data-value="7">7</button>
+      <button class="key" data-value="8">8</button>
+      <button class="key" data-value="9">9</button>
+      <button class="key operator" data-value="*">×</button>
 
-<!-- =========================
-     EXIT PAYWALL
-========================== -->
+      <button class="key" data-value="4">4</button>
+      <button class="key" data-value="5">5</button>
+      <button class="key" data-value="6">6</button>
+      <button class="key operator" data-value="-">−</button>
 
-<div
-    class="overlay"
-    id="exitOverlay"
->
+      <button class="key" data-value="1">1</button>
+      <button class="key" data-value="2">2</button>
+      <button class="key" data-value="3">3</button>
+      <button class="key operator" data-value="+">+</button>
 
-    <div class="exit-paywall" id="exitBox">
+      <button class="key zero" data-value="0">0</button>
+      <button class="key" data-value=".">.</button>
+      <button class="key equals" data-action="equals">=</button>
+    </section>
 
-        <div id="exitContent">
+    <div class="foot">
+      <span>CALCULATIONS ARE LOCAL</span>
+      <span>VERSION 4.9.0</span>
+    </div>
+  </main>
 
-            <div class="warning-icon">
-                !
-            </div>
+  <div class="homebar"></div>
 
-            <div class="paywall-label">
-                CALCULATOR PRO+
-            </div>
+  <section class="scene" id="scene" aria-live="polite">
+    <div class="scene-top">CALCULATION IN PROGRESS · PRO AI</div>
 
-            <h3>
-                Wait. You can't exit yet.
-            </h3>
+    <div class="paper p1"></div>
+    <div class="paper p2"></div>
+    <div class="paper p3"></div>
+    <div class="paper p4"></div>
+    <div class="paper p5"></div>
+    <div class="paper p6"></div>
+    <div class="paper p7"></div>
+    <div class="paper p8"></div>
+    <div class="paper p9"></div>
+    <div class="paper p10"></div>
+    <div class="paper p11"></div>
+    <div class="paper p12"></div>
 
-            <p class="exit-description">
-                Exiting Calculator Pro+ requires an Exit License.
-                This feature is available for a small one-time fee.
-            </p>
+    <div class="einstein-wrap">
+      <div class="halo"></div>
+      <div class="thought" id="thought">hmm… let me think</div>
 
+      <div class="einstein" aria-label="Animated cartoon illustration of Einstein">
+        <svg viewBox="0 0 190 220" role="img" aria-hidden="true">
+          <defs>
+            <linearGradient id="coat" x1="0" x2="1">
+              <stop stop-color="#d8d4c9"/>
+              <stop offset="1" stop-color="#8f918f"/>
+            </linearGradient>
+            <linearGradient id="skin" x1="0" x2="1">
+              <stop stop-color="#f0c9a8"/>
+              <stop offset="1" stop-color="#c99273"/>
+            </linearGradient>
+          </defs>
 
-            <div class="exit-price">
+          <path d="M25 211 Q24 169 54 157 L73 151 L118 151 L139 160 Q170 174 169 211Z" fill="url(#coat)" stroke="#777a7a" stroke-width="2"/>
+          <path d="M72 155 L95 184 L119 154 L108 211 L83 211Z" fill="#f3eee4"/>
+          <path d="M92 183 L100 183 L104 211 L88 211Z" fill="#b3a17b"/>
 
-                <span>
-                    Exit License
-                </span>
+          <path d="M76 133 L75 159 Q95 178 117 158 L112 130Z" fill="url(#skin)"/>
 
-                <strong>
-                    $5.99
-                </strong>
+          <ellipse cx="48" cy="91" rx="13" ry="19" fill="#d5a181"/>
+          <ellipse cx="143" cy="91" rx="13" ry="19" fill="#d5a181"/>
+          <path d="M51 62 Q55 30 95 31 Q137 31 141 67 L135 112 Q128 145 96 150 Q63 145 56 112Z" fill="url(#skin)" stroke="#b7866c" stroke-width="1.4"/>
 
-            </div>
+          <path d="M55 68 Q32 58 43 37 Q22 24 43 8 Q52 2 66 18 Q73 -2 91 11 Q105 -4 118 14 Q139 3 145 22 Q165 23 155 44 Q164 57 140 72 L131 52 Q115 43 100 49 Q79 43 63 55Z" fill="#e9e5d9" stroke="#bcb8ae" stroke-width="2"/>
+          <path d="M49 35 Q59 22 68 42 M82 23 Q95 13 103 35 M119 26 Q134 19 139 39 M42 48 Q54 43 58 59 M143 48 Q133 44 131 58" fill="none" stroke="#c2beb4" stroke-width="4" stroke-linecap="round"/>
 
+          <path d="M62 77 Q75 68 85 77 M106 77 Q120 68 132 78" fill="none" stroke="#8b8274" stroke-width="5" stroke-linecap="round"/>
 
-            <button
-                class="pay-exit"
-                id="payExitButton"
-            >
-                PAY $5.99 TO EXIT
-            </button>
+          <ellipse cx="74" cy="88" rx="5" ry="6" fill="#292a2c"/>
+          <ellipse cx="119" cy="88" rx="5" ry="6" fill="#292a2c"/>
+          <circle cx="76" cy="86" r="1.5" fill="#fff"/>
+          <circle cx="121" cy="86" r="1.5" fill="#fff"/>
 
+          <path d="M95 86 Q90 104 87 108 Q95 114 104 108" fill="none" stroke="#b7866c" stroke-width="3" stroke-linecap="round"/>
 
-            <button
-                class="later-btn"
-                id="stayButton"
-            >
-                Stay in Calculator Pro+
-            </button>
+          <path d="M94 117 Q80 108 65 116 Q57 126 70 132 Q85 136 96 124 Q108 136 123 131 Q137 125 126 115 Q111 108 98 117Z" fill="#f1ede2" stroke="#bcb8ae" stroke-width="1.5"/>
+          <path d="M95 125 Q92 143 103 145" fill="none" stroke="#b7866c" stroke-width="2"/>
 
-        </div>
-
-
-        <!-- FAKE SUCCESS SCREEN -->
-
-        <div
-            class="fake-success"
-            id="successContent"
-        >
-
-            <div class="fake-success-icon">
-                ✓
-            </div>
-
-            <h3>
-                Exit unlocked.
-            </h3>
-
-            <p>
-                Your fictional Exit License has been activated.
-            </p>
-
-            <button
-                class="success-close"
-                id="successClose"
-            >
-                CLOSE
-            </button>
-
-        </div>
-
+          <circle cx="74" cy="89" r="16" fill="none" stroke="#8b8a82" stroke-width="3"/>
+          <circle cx="119" cy="89" r="16" fill="none" stroke="#8b8a82" stroke-width="3"/>
+          <path d="M90 88 L103 88" stroke="#8b8a82" stroke-width="3"/>
+          <path d="M58 87 L48 84 M135 87 L146 83" stroke="#8b8a82" stroke-width="2"/>
+        </svg>
+      </div>
     </div>
 
-</div>
+    <h2 class="scene-title" id="sceneTitle">One moment.</h2>
+    <p class="scene-sub" id="sceneSub">Great minds need a little time.</p>
 
+    <div class="speech">
+      <div class="speech-label" id="speechLabel">EINSTEIN'S THOUGHT PROCESS</div>
+      <div class="speech-line" id="speechLine">
+        I used to do this for free.<br>
+        Those days are <strong>over.</strong>
+      </div>
+    </div>
+
+    <div class="scene-status" id="sceneStatus">
+      Reviewing your numbers<span class="dots"></span>
+    </div>
+
+    <div class="scene-actions" id="sceneActions" hidden>
+      <button class="scene-btn" id="backBtn">Back to calculator</button>
+      <button class="scene-btn primary" id="answerBtn">Get my answer</button>
+    </div>
+  </section>
+
+  <section class="modal-backdrop" id="paywall">
+    <div class="modal">
+      <div class="modal-kicker">EINSTEIN PRO · PREMIUM COMPUTATION</div>
+      <h2>Your answer is ready.<br>His invoice isn't free.</h2>
+      <p>Einstein has reviewed your calculation. Pay the entirely fictional genius fee to reveal the result.</p>
+
+      <div class="price-row">
+        <div>
+          <div class="price-caption">One correct answer</div>
+          <div class="price-note">No free intellectual labor</div>
+        </div>
+        <div class="price">$29.00</div>
+      </div>
+
+      <button class="pay-btn" id="payBtn">PAY $29 TO REVEAL ANSWER</button>
+      <button class="dismiss" id="dismissBtn">Maybe I'll do the math myself</button>
+      <p class="fake-note">PARODY UI FOR VIDEO · NO REAL PAYMENT IS PROCESSED</p>
+    </div>
+  </section>
+
+</div>
 
 <script>
-
-    /* =========================
-       CALCULATOR
-    ========================== */
-
-    const result = document.getElementById("result");
-    const expression = document.getElementById("expression");
-
-    let current = "";
-    let previous = "";
-    let operator = null;
-    let justCalculated = false;
-
-
-    function updateDisplay() {
-
-        if (current === "") {
-            result.textContent = "0";
-        } else {
-            result.textContent = current;
-        }
-
-    }
-
-
-    function inputNumber(number) {
-
-        if (justCalculated) {
-
-            current = "";
-            previous = "";
-            operator = null;
-
-            expression.textContent = "Ready";
-
-            justCalculated = false;
-        }
-
-
-        if (number === "." && current.includes(".")) {
-            return;
-        }
-
-
-        if (current === "0" && number !== ".") {
-            current = number;
-        } else {
-            current += number;
-        }
-
-
-        updateDisplay();
-    }
-
-
-    function chooseOperator(op) {
-
-        if (current === "") {
-            return;
-        }
-
-
-        if (previous !== "" && operator !== null) {
-
-            calculate(false);
-
-        }
-
-
-        previous = current;
-        current = "";
-
-        operator = op;
-
-        expression.textContent =
-            `${previous} ${displayOperator(op)}`;
-
-        justCalculated = false;
-    }
-
-
-    function displayOperator(op) {
-
-        if (op === "*") return "×";
-        if (op === "/") return "÷";
-        if (op === "-") return "−";
-
-        return op;
-    }
-
-
-    function calculate(showAnimation = true) {
-
-        if (
-            previous === "" ||
-            current === "" ||
-            operator === null
-        ) {
-            return;
-        }
-
-
-        const a = parseFloat(previous);
-        const b = parseFloat(current);
-
-        let answer;
-
-
-        switch (operator) {
-
-            case "+":
-                answer = a + b;
-                break;
-
-            case "-":
-                answer = a - b;
-                break;
-
-            case "*":
-                answer = a * b;
-                break;
-
-            case "/":
-                if (b === 0) {
-                    result.textContent = "Error";
-                    current = "";
-                    previous = "";
-                    operator = null;
-                    return;
-                }
-
-                answer = a / b;
-                break;
-        }
-
-
-        answer = Number(
-            answer.toFixed(8)
-        );
-
-
-        expression.textContent =
-            `${previous} ${displayOperator(operator)} ${current} =`;
-
-
-        current = String(answer);
-
-        previous = "";
-        operator = null;
-
-        justCalculated = true;
-
-
-        updateDisplay();
-
-
-        if (showAnimation) {
-
-            result.classList.add("flash");
-
-            setTimeout(() => {
-                result.classList.remove("flash");
-            }, 160);
-
-        }
-
-    }
-
-
-    function clearCalculator() {
-
-        current = "";
-        previous = "";
-        operator = null;
-        justCalculated = false;
-
-        expression.textContent = "Ready";
-
-        updateDisplay();
-    }
-
-
-    function backspace() {
-
-        if (justCalculated) {
-            clearCalculator();
-            return;
-        }
-
-        current = current.slice(0, -1);
-
-        updateDisplay();
-    }
-
-
-    /* =========================
-       BUTTONS
-    ========================== */
-
-    document.querySelectorAll(".key").forEach(button => {
-
-        button.addEventListener("click", () => {
-
-            const value = button.dataset.value;
-            const action = button.dataset.action;
-
-
-            if (value !== undefined) {
-
-                if (
-                    value === "+" ||
-                    value === "-" ||
-                    value === "*" ||
-                    value === "/"
-                ) {
-
-                    chooseOperator(value);
-
-                } else if (value === "%") {
-
-                    if (current !== "") {
-
-                        current = String(
-                            parseFloat(current) / 100
-                        );
-
-                        updateDisplay();
-
-                    }
-
-                } else {
-
-                    inputNumber(value);
-
-                }
-
-            }
-
-
-            if (action === "equals") {
-                calculate();
-            }
-
-
-            if (action === "clear") {
-                clearCalculator();
-            }
-
-
-            if (action === "backspace") {
-                backspace();
-            }
-
-        });
-
-    });
-
-
-    /* =========================
-       KEYBOARD
-    ========================== */
-
-    document.addEventListener("keydown", event => {
-
-        const key = event.key;
-
-
-        if (
-            key >= "0" &&
-            key <= "9"
-        ) {
-
-            inputNumber(key);
-
-        }
-
-
-        if (key === ".") {
-            inputNumber(".");
-        }
-
-
-        if (
-            key === "+" ||
-            key === "-" ||
-            key === "*" ||
-            key === "/"
-        ) {
-
-            chooseOperator(key);
-
-        }
-
-
-        if (
-            key === "Enter" ||
-            key === "="
-        ) {
-
-            event.preventDefault();
-
-            calculate();
-
-        }
-
-
-        if (key === "Backspace") {
-            backspace();
-        }
-
-
-        if (key === "Escape") {
-
-            /*
-                IMPORTANT:
-                Escape also triggers the paywall.
-                This makes the gag work even if you
-                try to exit with the keyboard.
-            */
-
-            openExitPaywall();
-
-        }
-
-
-        if (key === "Delete") {
-            clearCalculator();
-        }
-
-    });
-
-
-    /* =========================
-       VIDEO DEMO SHORTCUT
-    ========================== */
-
-    /*
-        Press D to instantly load:
-
-        12 + 12.99 = 24.99
-
-        Useful when filming.
-    */
-
-    document.addEventListener("keydown", event => {
-
-        if (
-            event.key.toLowerCase() === "d" &&
-            !event.metaKey &&
-            !event.ctrlKey
-        ) {
-
-            current = "12.99";
-            previous = "12";
-            operator = "+";
-            justCalculated = false;
-
-            expression.textContent = "12 +";
-
-            updateDisplay();
-
-        }
-
-    });
-
-
-    /* =========================
-       PRO+ PAYWALL
-    ========================== */
-
-    const proOverlay =
-        document.getElementById("proOverlay");
-
-    const unlockButton =
-        document.getElementById("unlockButton");
-
-    const laterButton =
-        document.getElementById("laterButton");
-
-
-    function openProPaywall() {
-
-        proOverlay.classList.add("show");
-
-    }
-
-
-    function closeProPaywall() {
-
-        proOverlay.classList.remove("show");
-
-    }
-
-
-    unlockButton.addEventListener(
-        "click",
-        () => {
-
-            unlockButton.textContent =
-                "PRO+ UNLOCKED ✓";
-
-            setTimeout(() => {
-
-                unlockButton.textContent =
-                    "UNLOCK PRO+ · $24.99";
-
-                closeProPaywall();
-
-            }, 900);
-
-        }
-    );
-
-
-    laterButton.addEventListener(
-        "click",
-        closeProPaywall
-    );
-
-
-    /* =========================
-       IMPORTANT VIDEO FLOW
-    ========================== */
-
-    /*
-        When the user presses "="
-        and gets $24.99, we DON'T immediately
-        open the paywall.
-
-        This gives you a clean moment:
-
-            12 + 12.99 = 24.99
-
-        Then YOU press EXIT.
-
-        That's the punchline.
-    */
-
-
-    /* =========================
-       EXIT PAYWALL
-    ========================== */
-
-    const exitButton =
-        document.getElementById("exitButton");
-
-    const exitOverlay =
-        document.getElementById("exitOverlay");
-
-    const stayButton =
-        document.getElementById("stayButton");
-
-    const payExitButton =
-        document.getElementById("payExitButton");
-
-    const exitContent =
-        document.getElementById("exitContent");
-
-    const successContent =
-        document.getElementById("successContent");
-
-    const successClose =
-        document.getElementById("successClose");
-
-
-    function openExitPaywall() {
-
-        exitOverlay.classList.add("show");
-
-    }
-
-
-    function closeExitPaywall() {
-
-        exitOverlay.classList.remove("show");
-
-    }
-
-
-    exitButton.addEventListener(
-        "click",
-        openExitPaywall
-    );
-
-
-    stayButton.addEventListener(
-        "click",
-        closeExitPaywall
-    );
-
-
-    payExitButton.addEventListener(
-        "click",
-        () => {
-
-            /*
-                Fictional visual confirmation only.
-                No real payment is processed.
-            */
-
-            exitContent.style.display = "none";
-
-            successContent.classList.add("show");
-
-        }
-    );
-
-
-    successClose.addEventListener(
-        "click",
-        () => {
-
-            successContent.classList.remove("show");
-
-            exitContent.style.display = "block";
-
-            closeExitPaywall();
-
-        }
-    );
-
-
-    /* =========================
-       DEMO INITIALIZATION
-    ========================== */
-
+const result = document.getElementById("result");
+const expression = document.getElementById("expression");
+const scene = document.getElementById("scene");
+const paywall = document.getElementById("paywall");
+
+let current = "";
+let previous = "";
+let operator = null;
+let justCalculated = false;
+let pendingAnswer = null;
+let sceneTimer = null;
+
+function updateDisplay() {
+  result.textContent = current || "0";
+}
+
+function inputNumber(n) {
+  if (justCalculated) {
+    current = "";
+    previous = "";
+    operator = null;
+    expression.textContent = "Ready when you are";
+    justCalculated = false;
+  }
+
+  if (n === "." && current.includes(".")) return;
+
+  if (current === "0" && n !== ".") {
+    current = n;
+  } else {
+    current += n;
+  }
+
+  updateDisplay();
+}
+
+function displayOperator(op) {
+  if (op === "*") return "×";
+  if (op === "/") return "÷";
+  if (op === "-") return "−";
+  return op;
+}
+
+function chooseOperator(op) {
+  if (current === "") return;
+
+  if (previous !== "" && operator !== null) {
+    const intermediate = compute();
+
+    if (intermediate === null || intermediate === "Error") return;
+
+    current = intermediate;
+  }
+
+  previous = current;
+  current = "";
+  operator = op;
+  justCalculated = false;
+
+  expression.textContent = `${previous} ${displayOperator(op)}`;
+  updateDisplay();
+}
+
+function compute() {
+  if (previous === "" || current === "" || operator === null) {
+    return null;
+  }
+
+  const a = Number(previous);
+  const b = Number(current);
+  let answer;
+
+  switch (operator) {
+    case "+":
+      answer = a + b;
+      break;
+    case "-":
+      answer = a - b;
+      break;
+    case "*":
+      answer = a * b;
+      break;
+    case "/":
+      if (b === 0) return "Error";
+      answer = a / b;
+      break;
+    default:
+      return null;
+  }
+
+  return Number.isFinite(answer)
+    ? String(Number(answer.toFixed(8)))
+    : "Error";
+}
+
+function calculate(animate = true) {
+  const answer = compute();
+
+  if (answer === null) return;
+
+  if (answer === "Error") {
+    result.textContent = "Error";
+    current = "";
+    previous = "";
+    operator = null;
+    return;
+  }
+
+  pendingAnswer = answer;
+
+  if (!animate) {
+    current = answer;
+    previous = "";
+    operator = null;
+    justCalculated = true;
     updateDisplay();
+    return;
+  }
 
+  startEinsteinScene();
+}
+
+function startEinsteinScene() {
+  clearTimeout(sceneTimer);
+
+  scene.classList.remove("final", "burst");
+  scene.classList.add("show");
+
+  document.getElementById("sceneTitle").textContent = "One moment.";
+  document.getElementById("sceneSub").textContent =
+    "Great minds need a little time.";
+  document.getElementById("thought").textContent =
+    "hmm… let me think";
+
+  document.getElementById("speechLabel").textContent =
+    "EINSTEIN'S THOUGHT PROCESS";
+
+  document.getElementById("speechLine").innerHTML =
+    "I used to do this for free.<br>Those days are <strong>over.</strong>";
+
+  document.getElementById("sceneStatus").innerHTML =
+    'Reviewing your numbers<span class="dots"></span>';
+
+  document.getElementById("sceneActions").hidden = true;
+
+  result.classList.add("waiting");
+  result.textContent = "Thinking…";
+
+  sceneTimer = setTimeout(() => {
+    scene.classList.add("burst");
+
+    document.getElementById("thought").textContent =
+      "I have had ENOUGH";
+
+    document.getElementById("sceneTitle").textContent =
+      "A scientific breakthrough.";
+
+    document.getElementById("sceneSub").textContent =
+      "The papers have been reviewed. And thrown.";
+
+    document.getElementById("speechLabel").textContent =
+      "NEW PRICING POLICY";
+
+    document.getElementById("speechLine").innerHTML =
+      'You want the correct answer? <strong>$29.</strong> Genius is not a charity.';
+
+    document.getElementById("sceneStatus").textContent =
+      "Invoice generated successfully";
+
+    document.getElementById("sceneActions").hidden = false;
+  }, 2500);
+}
+
+function closeScene() {
+  clearTimeout(sceneTimer);
+  scene.classList.remove("show", "burst", "final");
+  result.classList.remove("waiting");
+  updateDisplay();
+}
+
+function clearCalculator() {
+  current = "";
+  previous = "";
+  operator = null;
+  justCalculated = false;
+  expression.textContent = "Ready when you are";
+  result.classList.remove("waiting");
+  updateDisplay();
+}
+
+function backspace() {
+  if (justCalculated) {
+    current = "";
+    justCalculated = false;
+  } else {
+    current = current.slice(0, -1);
+  }
+
+  updateDisplay();
+}
+
+document.querySelectorAll(".key").forEach(button => {
+  button.addEventListener("click", () => {
+    const value = button.dataset.value;
+    const action = button.dataset.action;
+
+    if (value !== undefined) {
+      if (["+", "-", "*", "/"].includes(value)) {
+        chooseOperator(value);
+      } else if (value === "%") {
+        if (current !== "") {
+          current = String(Number(current) / 100);
+          updateDisplay();
+        }
+      } else {
+        inputNumber(value);
+      }
+    }
+
+    if (action === "equals") calculate();
+    if (action === "clear") clearCalculator();
+    if (action === "backspace") backspace();
+  });
+});
+
+document.addEventListener("keydown", event => {
+  if (paywall.classList.contains("show")) {
+    if (event.key === "Escape") {
+      paywall.classList.remove("show");
+    }
+    return;
+  }
+
+  if (scene.classList.contains("show")) return;
+
+  const key = event.key;
+
+  if (key >= "0" && key <= "9") {
+    inputNumber(key);
+  } else if (key === ".") {
+    inputNumber(".");
+  } else if (["+", "-", "*", "/"].includes(key)) {
+    chooseOperator(key);
+  } else if (key === "Enter" || key === "=") {
+    event.preventDefault();
+    calculate();
+  } else if (key === "Backspace") {
+    backspace();
+  } else if (key === "Escape") {
+    clearCalculator();
+  }
+});
+
+document.getElementById("answerBtn").addEventListener("click", () => {
+  scene.classList.remove("show");
+  paywall.classList.add("show");
+});
+
+document.getElementById("backBtn").addEventListener("click", () => {
+  closeScene();
+  clearCalculator();
+});
+
+document.getElementById("payBtn").addEventListener("click", () => {
+  paywall.classList.remove("show");
+  scene.classList.remove("show", "burst");
+  result.classList.remove("waiting");
+
+  current = pendingAnswer ?? "0";
+  previous = "";
+  operator = null;
+  justCalculated = true;
+
+  expression.textContent = "Einstein-approved result";
+  updateDisplay();
+});
+
+document.getElementById("dismissBtn").addEventListener("click", () => {
+  paywall.classList.remove("show");
+  closeScene();
+});
+
+updateDisplay();
 </script>
-
 </body>
 </html>
